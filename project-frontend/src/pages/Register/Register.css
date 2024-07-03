@@ -1,0 +1,25 @@
+.registerDesign {
+    /* ya se cambiará el color  */
+
+    height: 88vh;
+    width: 100vw;
+
+    background-color: rgb(243, 243, 243);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    height: 1em;
+    color: rgb(0, 0, 0);
+}
+
+.successMessage {
+    height: 1em;
+    color: rgb(255, 65, 198)
+}
+
+/* ya se cambiará el color  */
