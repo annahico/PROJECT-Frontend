@@ -22,3 +22,11 @@
     transition: 0.2s;
     background-color: rgb(68, 1, 107);
 }
+
+.customButtonGreen {
+    background-color: green;
+}
+
+.customButtonGreen:hover {
+    background-color: darkgreen;
+}

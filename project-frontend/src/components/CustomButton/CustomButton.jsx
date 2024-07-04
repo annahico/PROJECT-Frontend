@@ -1,10 +1,16 @@
-import "./CustomButton.css";
+import "./CustomInput.css";
 
-export const CustomButton = ({className, title, functionEmit}) => {
-
+export const CustomInput = ({ className, type, placeholder, name, value, onChangeFunction, onBlurFunction, disabled }) => {
     return (
-        <div className={className} onClick={functionEmit}>
-            {title}
-        </div>
-    )
-}
+        <input 
+            className={className}
+            type={type}
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            onChange={onChangeFunction}
+            onBlur={onBlurFunction}
+            disabled={disabled}
+        />
+    );
+};
