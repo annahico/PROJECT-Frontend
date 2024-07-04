@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
@@ -7,8 +6,11 @@ import { RegisterUser } from "../../services/apiCalls";
 import { validame } from "../../utils/functions";
 import "./Register.css";
 
+const datosUser = JSON.parse(localStorage.getItem("passport"));
+
 export const Register = () => {
   const navigate = useNavigate();
+  const [tokenStorage] = useState(datosUser?.token);
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -24,34 +26,37 @@ export const Register = () => {
   const [msgError, setMsgError] = useState("");
   const [msgSuccess, setMsgSuccess] = useState("");
 
+  useEffect(() => {
+    if (tokenStorage) {
+      navigate("/");
+    }
+  }, [tokenStorage, navigate]);
+
   const inputHandler = (e) => {
-    const { name, value } = e.target;
     setUser((prevState) => ({
       ...prevState,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
   };
 
   const checkError = (e) => {
-    const { name, value } = e.target;
-    const error = validame(name, value);
+    const error = validame(e.target.name, e.target.value);
     setUserError((prevState) => ({
       ...prevState,
-      [`${name}Error`]: error,
+      [`${e.target.name}Error`]: error,
     }));
   };
 
   const registerMe = async () => {
     try {
-      for (let key in user) {
-        if (user[key] === "") {
+      for (let elemento in user) {
+        if (user[elemento] === "") {
           throw new Error("Todos los campos tienen que estar rellenos");
         }
       }
-      const response = await RegisterUser(user);
-      setMsgSuccess(response.message);
+      const fetched = await RegisterUser(user);
+      setMsgSuccess(fetched.message);
       setTimeout(() => {
-        navigate("/");
         navigate("/login");
       }, 1200);
     } catch (error) {
@@ -68,8 +73,8 @@ export const Register = () => {
         placeholder="first_name"
         name="first_name"
         value={user.first_name}
-        onChange={inputHandler}
-        onBlur={checkError}
+        onChange={(e) => inputHandler(e)}
+        onBlur={(e) => checkError(e)}
       />
       <div className="error">{userError.first_nameError}</div>
       <CustomInput
@@ -78,8 +83,8 @@ export const Register = () => {
         placeholder="last_name"
         name="last_name"
         value={user.last_name}
-        onChange={inputHandler}
-        onBlur={checkError}
+        onChange={(e) => inputHandler(e)}
+        onBlur={(e) => checkError(e)}
       />
       <div className="error">{userError.last_nameError}</div>
       <CustomInput
@@ -88,8 +93,8 @@ export const Register = () => {
         placeholder="email"
         name="email"
         value={user.email}
-        onChange={inputHandler}
-        onBlur={checkError}
+        onChange={(e) => inputHandler(e)}
+        onBlur={(e) => checkError(e)}
       />
       <div className="error">{userError.emailError}</div>
       <CustomInput
@@ -98,8 +103,8 @@ export const Register = () => {
         placeholder="password"
         name="password_hash"
         value={user.password_hash}
-        onChange={inputHandler}
-        onBlur={checkError}
+        onChange={(e) => inputHandler(e)}
+        onBlur={(e) => checkError(e)}
       />
       <div className="error">{userError.password_hashError}</div>
       <CustomButton
