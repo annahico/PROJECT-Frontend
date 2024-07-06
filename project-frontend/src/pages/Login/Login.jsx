@@ -7,11 +7,8 @@ import { LoginUser } from "../../services/apiCalls";
 import { validame } from "../../utils/functions";
 import "./Login.css";
 
-const datosUser = JSON.parse(localStorage.getItem("passport"));
-
 export const Login = () => {
   const navigate = useNavigate();
-  const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
   const [credenciales, setCredenciales] = useState({
     email: "",
     password_hash: "",
@@ -23,10 +20,11 @@ export const Login = () => {
   const [msgError, setMsgError] = useState("");
 
   useEffect(() => {
-    if (tokenStorage) {
+    const datosUser = JSON.parse(localStorage.getItem("passport"));
+    if (datosUser?.token) {
       navigate("/");
     }
-  }, [tokenStorage, navigate]);
+  }, [navigate]);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -80,8 +78,8 @@ export const Login = () => {
         placeholder="email"
         name="email"
         value={credenciales.email}
-        onChange={(e) => inputHandler(e)}
-        onBlur={(e) => checkError(e)}
+        onChange={inputHandler}
+        onBlur={checkError}
       />
       <div className="error">{credencialesError.emailError}</div>
       <CustomInput
@@ -90,8 +88,8 @@ export const Login = () => {
         placeholder="password"
         name="password_hash"
         value={credenciales.password_hash}
-        onChange={(e) => inputHandler(e)}
-        onBlur={(e) => checkError(e)}
+        onChange={inputHandler}
+        onBlur={checkError}
       />
       <div className="error">{credencialesError.password_hashError}</div>
       <CustomButton

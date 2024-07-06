@@ -7,6 +7,10 @@
     margin: 1em;
 }
 
+.inputDesign:focus {
+    outline: none;
+}
+
 .inputDesignError {
     border: 0.2em solid rgb(127, 30, 172);
 }
