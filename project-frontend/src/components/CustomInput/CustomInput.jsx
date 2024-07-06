@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types';
 import "./CustomInput.css";
 
-export const CustomInput = ({className, type, placeholder, name, value, onChangeFunction, onBlurFunction}) => {
-
+export const CustomInput = ({ className, type, placeholder, name, value, onChangeFunction, onBlurFunction }) => {
     return (
         <input 
             className={className}
@@ -12,5 +12,24 @@ export const CustomInput = ({className, type, placeholder, name, value, onChange
             onChange={onChangeFunction}
             onBlur={onBlurFunction}
         />
-    )
+    );
 }
+
+CustomInput.propTypes = {
+    className: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]).isRequired,
+    onChangeFunction: PropTypes.func.isRequired,
+    onBlurFunction: PropTypes.func,
+};
+
+CustomInput.defaultProps = {
+    className: '',
+    placeholder: '',
+    onBlurFunction: () => {},
+};
