@@ -4,20 +4,39 @@ import { AppointmentCard } from "../../components/AppointmentCard/AppointmentCar
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { ProfileCard } from "../../components/ProfileCard/ProfileCard";
-import { GetAppointments, GetProfile, PostAppointment, UpdateProfile } from "../../services/apiCalls";
+import {
+  DeleteUserAppointment,
+  GetAppointments,
+  GetProfile,
+  PostAppointment,
+  UpdateProfile
+} from "../../services/apiCalls";
 import { validame } from "../../utils/functions";
 import "./Profile.css";
 
 export const Profile = () => {
   const datosUser = JSON.parse(localStorage.getItem("passport"));
   const navigate = useNavigate();
-
   const [appointments, setAppointments] = useState([]);
   const [appointmentsCredentials, setAppointmentsCredentials] = useState({
     appointment_date: "",
     service_id: "",
   });
+  const [write, setWrite] = useState("disabled");
+  const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
+  const [loadedData, setLoadedData] = useState(false);
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+  });
+  const [userError, setUserError] = useState({
+    first_nameError: "",
+    last_nameError: "",
+    emailError: "",
+  });
 
+  // Handler for appointment inputs
   const appointmentInputHandler = (e) => {
     setAppointmentsCredentials((prevState) => ({
       ...prevState,
@@ -25,20 +44,7 @@ export const Profile = () => {
     }));
   };
 
-  const [write, setWrite] = useState("disabled");
-  const [loadedData, setLoadedData] = useState(false);
-  const [user, setUser] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-  });
-
-  const [userError, setUserError] = useState({
-    first_nameError: "",
-    last_nameError: "",
-    emailError: "",
-  });
-
+  // Handler for user inputs
   const inputHandler = (e) => {
     setUser((prevState) => ({
       ...prevState,
@@ -46,6 +52,7 @@ export const Profile = () => {
     }));
   };
 
+  // Validate user input
   const checkError = (e) => {
     const error = validame(e.target.name, e.target.value);
     setUserError((prevState) => ({
@@ -54,30 +61,34 @@ export const Profile = () => {
     }));
   };
 
+  // Fetch appointments if not already loaded
   useEffect(() => {
-    if (appointments.length === 0) {
-      const bringData = async () => {
-        try {
-          const fetched = await GetAppointments(datosUser.token);
-          setAppointments(fetched.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      bringData();
-    }
-  }, [appointments, datosUser.token]);
+    const bringAppointments = async () => {
+      try {
+        const fetched = await GetAppointments(tokenStorage);
+        setAppointments(fetched.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    if (appointments.length === 0) {
+      bringAppointments();
+    }
+  }, [appointments, tokenStorage]);
+
+  // Redirect to home if no token is present
   useEffect(() => {
-    if (!datosUser?.token) {
+    if (!tokenStorage) {
       navigate("/");
     }
-  }, [datosUser, navigate]);
+  }, [tokenStorage, navigate]);
 
+  // Fetch user profile if not already loaded
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        const fetched = await GetProfile(datosUser.token);
+        const fetched = await GetProfile(tokenStorage);
         setLoadedData(true);
         setUser({
           first_name: fetched.data.first_name,
@@ -88,18 +99,20 @@ export const Profile = () => {
         console.log(error);
       }
     };
+
     if (!loadedData) {
       getUserProfile();
     }
-  }, [loadedData, datosUser.token]);
+  }, [loadedData, tokenStorage]);
 
+  // Update user data
   const updateData = async () => {
     try {
-      const fetched = await UpdateProfile(datosUser.token, user);
+      const fetched = await UpdateProfile(tokenStorage, user);
       setUser({
-        first_name: fetched.dataFetched.first_name,
-        last_name: fetched.dataFetched.last_name,
-        email: fetched.dataFetched.email,
+        first_name: fetched.data.first_name,
+        last_name: fetched.data.last_name,
+        email: fetched.data.email,
       });
       setWrite("disabled");
     } catch (error) {
@@ -107,10 +120,24 @@ export const Profile = () => {
     }
   };
 
+  // Create an appointment
   const createAppointment = async () => {
     try {
-      await PostAppointment(datosUser.token, appointmentsCredentials);
+      await PostAppointment(tokenStorage, appointmentsCredentials);
       navigate("/profile");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Delete an appointment
+  const deleteAppointment = async (appointmentId) => {
+    try {
+      const fetched = await DeleteUserAppointment(appointmentId, tokenStorage);
+      console.log(fetched.message);
+      setAppointments((prevAppointments) =>
+        prevAppointments.filter((appointment) => appointment.id !== appointmentId)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +148,7 @@ export const Profile = () => {
       {!loadedData ? (
         <div>CARGANDO</div>
       ) : (
-        <>
+        <div>
           <ProfileCard
             first_name={user.first_name}
             last_name={user.last_name}
@@ -165,14 +192,20 @@ export const Profile = () => {
             title={write === "" ? "Confirm" : "Edit"}
             functionEmit={write === "" ? updateData : () => setWrite("")}
           />
-        </>
+        </div>
       )}
       {appointments.map((appointment) => (
-        <AppointmentCard
-          key={appointment.id}
-          service_id={appointment.service.service_name}
-          appointment_date={appointment.appointment_date}
-        />
+        <div key={appointment.id}>
+          <AppointmentCard
+            service_id={appointment.service.service_name}
+            appointment_date={appointment.appointment_date}
+          />
+          <CustomButton
+            className="customButtonDesign"
+            title="Borrar cita"
+            functionEmit={() => deleteAppointment(appointment.id)}
+          />
+        </div>
       ))}
       <pre>{JSON.stringify(appointmentsCredentials, null, 2)}</pre>
       <CustomInput
