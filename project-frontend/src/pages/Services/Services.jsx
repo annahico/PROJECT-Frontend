@@ -9,8 +9,8 @@ export const Services = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await GetServices();
-                setServices(response.data);
+                const fetched = await GetServices();
+                setServices(fetched.data);
             } catch (error) {
                 console.error("Error fetching services:", error);
             }
@@ -22,10 +22,10 @@ export const Services = () => {
     }, [services]);
 
     return (
-        <div className="services-design">
-            <div>Vista de Servicios</div>
+        <div className="servicesDesign">
+            <div>Services View</div>
             {services.length > 0 ? (
-                <div className="services-list">
+                <div className="servicesList">
                     {services.map((service, index) => (
                         <ServicesCard
                             key={index}
@@ -35,7 +35,7 @@ export const Services = () => {
                     ))}
                 </div>
             ) : (
-                <p>Los servicios están viniendo</p>
+                <p>Services are coming</p>
             )}
         </div>
     );
