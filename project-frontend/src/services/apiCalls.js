@@ -1,175 +1,95 @@
 const root = "http://localhost:4000/api/";
 
-export const RegisterUser = async (user) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
+const fetchOptions = (method, body = null, token = null) => {
+    const headers = {
+        "Content-Type": "application/json",
     };
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+    return {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : null,
+    };
+};
 
+const handleResponse = async (response) => {
+    const data = await response.json();
+    if (!data.success) {
+        throw new Error(data.message);
+    }
+    return data;
+};
+
+export const RegisterUser = async (user) => {
     try {
-        const response = await fetch(`${root}auth/register`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error registering user");
-        }
-
-        return data;
+        const response = await fetch(`${root}auth/register`, fetchOptions("POST", user));
+        return await handleResponse(response);
     } catch (error) {
-        console.error("Error registering user:", error);
-        throw error;
+        return error;
     }
 };
 
 export const LoginUser = async (credentials) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-    };
-
     try {
-        const response = await fetch(`${root}auth/login`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error logging in");
-        }
-
-        return data;
+        const response = await fetch(`${root}auth/login`, fetchOptions("POST", credentials));
+        return await handleResponse(response);
     } catch (error) {
-        console.error("Error logging in:", error);
-        throw error;
+        return error;
     }
 };
 
 export const GetProfile = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    };
-
     try {
-        const response = await fetch(`${root}user/profile`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error fetching profile");
-        }
-
-        return data;
+        const response = await fetch(`${root}user/profile`, fetchOptions("GET", null, token));
+        return await handleResponse(response);
     } catch (error) {
-        console.error("Error fetching profile:", error);
-        throw error;
+        return error;
     }
 };
-
 
 export const UpdateProfile = async (token, data) => {
-    const options = {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    };
-
     try {
-        const response = await fetch(`${root}user/profile`, options);
-        const updatedData = await response.json();
-
-        if (!response.ok) {
-            throw new Error(updatedData.message || "Error updating profile");
-        }
-
-        return updatedData;
+        const response = await fetch(`${root}user/profile`, fetchOptions("PUT", data, token));
+        return await handleResponse(response);
     } catch (error) {
-        console.error("Error updating profile:", error);
-        throw error;
+        return error;
     }
 };
-
 
 export const GetAppointments = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    };
-
     try {
-        const response = await fetch(`${root}appointments`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error fetching appointments");
-        }
-
-        return data;
+        const response = await fetch(`${root}appointments`, fetchOptions("GET", null, token));
+        return await response.json();
     } catch (error) {
-        console.error("Error fetching appointments:", error);
-        throw error;
+        return error;
     }
 };
 
-
-export const PostAppointment = async (token, appointmentsCredentials) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(appointmentsCredentials),
-    };
-
+export const PostAppointment = async (token, appointmentCredentials) => {
     try {
-        const response = await fetch(`${root}appointments`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error creating appointment");
-        }
-
-        return data;
+        const response = await fetch(`${root}appointments`, fetchOptions("POST", appointmentCredentials, token));
+        return await response.json();
     } catch (error) {
-        console.error("Error creating appointment:", error);
-        throw error;
+        return error;
     }
 };
 
-
-export const GetServices = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    };
-
+export const GetServices = async () => {
     try {
-        const response = await fetch(`${root}services`, options);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Error fetching services");
-        }
-
-        return data;
+        const response = await fetch(`${root}services`, fetchOptions("GET"));
+        return await handleResponse(response);
     } catch (error) {
-        console.error("Error fetching services:", error);
-        throw error;
+        return error;
+    }
+};
+
+export const DeleteUserAppointment = async (appointmentId, token) => {
+    try {
+        const response = await fetch(`${root}appointments/${appointmentId}`, fetchOptions("DELETE", null, token));
+        return await handleResponse(response);
+    } catch (error) {
+        return error;
     }
 };
