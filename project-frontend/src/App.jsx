@@ -1,6 +1,5 @@
-// import React from 'react';
 import './App.css';
-import { Body } from './common/Body/Body';
+import Body from './common/Body/Body'; // Importar como export por defecto
 import { Footer } from './common/Footer/Footer';
 import { Header } from './common/Header/Header';
 
@@ -8,7 +7,7 @@ function App() {
     return (
         <div className="App">
             <Header />
-            <Body />
+            <Body />  
             <Footer />
         </div>
     );

@@ -16,8 +16,8 @@ const fetchOptions = (method, body = null, token = null) => {
 
 const handleResponse = async (response) => {
     const data = await response.json();
-    if (!data.success) {
-        throw new Error(data.message);
+    if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
     }
     return data;
 };
@@ -61,16 +61,16 @@ export const UpdateProfile = async (token, data) => {
 export const GetAppointments = async (token) => {
     try {
         const response = await fetch(`${root}appointments`, fetchOptions("GET", null, token));
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
         return error;
     }
 };
 
-export const PostAppointment = async (token, appointmentCredentials) => {
+export const PostAppointment = async (token, appointmentsCredentials) => {
     try {
-        const response = await fetch(`${root}appointments`, fetchOptions("POST", appointmentCredentials, token));
-        return await response.json();
+        const response = await fetch(`${root}appointments`, fetchOptions("POST", appointmentsCredentials, token));
+        return await handleResponse(response);
     } catch (error) {
         return error;
     }
@@ -88,6 +88,15 @@ export const GetServices = async () => {
 export const DeleteUserAppointment = async (appointmentId, token) => {
     try {
         const response = await fetch(`${root}appointments/${appointmentId}`, fetchOptions("DELETE", null, token));
+        return await handleResponse(response);
+    } catch (error) {
+        return error;
+    }
+};
+
+export const GetUsers = async (token) => {
+    try {
+        const response = await fetch(`${root}users`, fetchOptions("GET", null, token));
         return await handleResponse(response);
     } catch (error) {
         return error;
