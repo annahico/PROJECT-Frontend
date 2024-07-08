@@ -1,4 +1,3 @@
-// import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { CustomLink } from "../../components/CustomLink/CustomLink";
 import "./Header.css";

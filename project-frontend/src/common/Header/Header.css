@@ -1,13 +1,21 @@
-.headerDesign {
-    height: 10vh;
+.homeDesign {
+    height: 96vh;
+    /* Ajustado el alto para ocupar el 96% de la altura visible del viewport */
     width: 100vw;
-    background-color: rgb(0, 0, 0);
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
+    /* Ancho completo del viewport */
 
-.menu {
+    background-color: rgb(30, 26, 29);
+    /* Color de fondo en formato RGB */
+    color: beige;
+    /* Color del texto */
+
+    font-weight: bold;
+    font-size: xx-large;
+    font-family: "Josefin Sans", sans-serif;
+    font-style: normal;
+
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
