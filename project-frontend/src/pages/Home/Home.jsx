@@ -1,10 +1,14 @@
+// import React from 'react';
+import { Header } from "../../common/Header/Header";
 import "./Home.css";
 
 export const Home = () => {
-
     return (
-        <div className='homeDesign'>
-            Home
-        </div>
-    )
-}
+        <>
+            <Header />
+            <div className='homeDesign'>
+                Home
+            </div>
+        </>
+    );
+};

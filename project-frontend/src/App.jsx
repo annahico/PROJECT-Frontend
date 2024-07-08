@@ -1,16 +1,17 @@
+// import React from 'react';
 import './App.css';
-// import { Footer } from './common/Footer/Footer';
-// import { Header } from './common/Header/Header';
-// import { Body } from './common/Body/Body';
+import { Body } from './common/Body/Body';
+import { Footer } from './common/Footer/Footer';
+import { Header } from './common/Header/Header';
 
 function App() {
-  return (
-    <div className="App">
-      {/* <Header /> */}
-      {/* <Body /> */}
-      {/* <Footer /> */}
-    </div>
-  );
+    return (
+        <div className="App">
+            <Header />
+            <Body />
+            <Footer />
+        </div>
+    );
 }
 
 export default App;
