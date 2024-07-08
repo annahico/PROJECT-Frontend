@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../common/Header/Header";
-import { CustomButton } from "../../components/CustomButton/CustomButton";
+import { CustomButton } from "../../components/CustomButton/CustomButton.jsx";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { LoginUser } from "../../services/apiCalls";
-import { validame } from "../../utils/functions";
+// import { validame } from "../../utils/functions";
 import "./Login.css";
 
 const datosUser = JSON.parse(localStorage.getItem("passport"));
@@ -39,7 +39,7 @@ export const Login = () => {
 
   const checkError = (e) => {
     const { name, value } = e.target;
-    const error = validame(name, value);
+    // const error = validame(name, value);
     setCredencialesError((prevState) => ({
       ...prevState,
       [`${name}Error`]: error,

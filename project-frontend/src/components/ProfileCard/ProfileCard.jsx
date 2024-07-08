@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import "./ProfileCard.css";
 
 export const ProfileCard = ({ first_name, last_name, email }) => (
@@ -9,8 +8,8 @@ export const ProfileCard = ({ first_name, last_name, email }) => (
     </div>
 );
 
-ProfileCard.propTypes = {
-    first_name: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-};
+// ProfileCard.propTypes = {
+//     first_name: PropTypes.string.isRequired,
+//     last_name: PropTypes.string.isRequired,
+//     email: PropTypes.string.isRequired,
+// };

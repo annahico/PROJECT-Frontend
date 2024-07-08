@@ -1,5 +1,4 @@
 // import React from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import "./CustomLink.css";
 
@@ -19,7 +18,7 @@ export const CustomLink = ({ title, destination }) => {
 }
 
 // Validación de propiedades
-CustomLink.propTypes = {
-    title: PropTypes.string.isRequired,
-    destination: PropTypes.string.isRequired
-};
+// CustomLink.propTypes = {
+//     title: PropTypes.string.isRequired,
+//     destination: PropTypes.string.isRequired
+// };

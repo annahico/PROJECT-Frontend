@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-import "./CustomInput.css";
+import "./CustomButton.css";
 
-export const CustomInput = ({ className, type, placeholder, name, value, onChangeFunction, onBlurFunction, disabled }) => {
+export const CustomButton = ({ className, type, placeholder, name, value, onChangeFunction, onBlurFunction, disabled }) => {
     return (
         <input 
             className={className}
@@ -16,26 +15,26 @@ export const CustomInput = ({ className, type, placeholder, name, value, onChang
     );
 };
 
-CustomInput.propTypes = {
-    className: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]).isRequired,
-    onChangeFunction: PropTypes.func.isRequired,
-    onBlurFunction: PropTypes.func,
-    disabled: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool
-    ]),
-};
+// CustomButton.propTypes = {
+//     className: PropTypes.string,
+//     type: PropTypes.string.isRequired,
+//     placeholder: PropTypes.string,
+//     name: PropTypes.string.isRequired,
+//     value: PropTypes.oneOfType([
+//         PropTypes.string,
+//         PropTypes.number
+//     ]).isRequired,
+//     onChangeFunction: PropTypes.func.isRequired,
+//     onBlurFunction: PropTypes.func,
+//     disabled: PropTypes.oneOfType([
+//         PropTypes.string,
+//         PropTypes.bool
+//     ]),
+// };
 
-CustomInput.defaultProps = {
-    className: '',
-    placeholder: '',
-    onBlurFunction: () => {},
-    disabled: false,
-};
+// CustomButton.defaultProps = {
+//     className: '',
+//     placeholder: '',
+//     onBlurFunction: () => {},
+//     disabled: false,
+// };

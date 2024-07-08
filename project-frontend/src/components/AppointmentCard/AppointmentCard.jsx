@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import "./AppointmentCard.css";
 
 export const AppointmentCard = ({ service_id, appointment_date }) => {
@@ -10,7 +9,7 @@ export const AppointmentCard = ({ service_id, appointment_date }) => {
     );
 }
 
-AppointmentCard.propTypes = {
-    service_id: PropTypes.string.isRequired,
-    appointment_date: PropTypes.string.isRequired,
-};
+// AppointmentCard.propTypes = {
+//     service_id: PropTypes.string.isRequired,
+//     appointment_date: PropTypes.string.isRequired,
+// };
