@@ -4,7 +4,7 @@ import { Header } from "../../common/Header/Header";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { RegisterUser } from "../../services/apiCalls";
-// import { validate } from "../../utils/functions";
+// import { validate } from "../../utils/functions"; // Asumiendo que validate es una función de utilidad en functions.js
 import "./Register.css";
 
 const Register = () => {
@@ -43,7 +43,7 @@ const Register = () => {
 
   // Valida los campos de entrada
   const checkError = (e) => {
-    const error = validate(e.target.name, e.target.value);
+    const error = validate(e.target.name, e.target.value); // Asumiendo que validate valida los campos según la función de utilidad
     setUserError((prevState) => ({
       ...prevState,
       [`${e.target.name}Error`]: error,
@@ -53,7 +53,6 @@ const Register = () => {
   // Registra al usuario
   const registerMe = async () => {
     try {
-
       // Verifica si todos los campos están llenos
       for (let elemento in user) {
         if (user[elemento] === "") {
