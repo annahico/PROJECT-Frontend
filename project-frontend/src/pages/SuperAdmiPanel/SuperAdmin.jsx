@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { Header } from "../../common/Header/Header";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { ProfileCard } from "../../components/ProfileCard/ProfileCard";
-import { GetUsers } from "../../services/apiCalls";
+import { DeleteUsers, GetUsers } from "../../services/apiCalls";
 import "./SuperAdmin.css";
 
 export const SuperAdminPanel = () => {
     const [users, setUsers] = useState([]);
-    const datosUser = JSON.parse(localStorage.getItem("passport"));
-    const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
+    const userData = JSON.parse(localStorage.getItem("passport"));
+    const [tokenStorage, setTokenStorage] = useState(userData?.token);
+
+    const [msgError, setMsgError] = useState("");
+    const [msgSuccess, setMsgSuccess] = useState("");
 
     // Carga inicial de usuarios cuando el componente se monta o el tokenStorage cambia
     useEffect(() => {
@@ -26,8 +29,16 @@ export const SuperAdminPanel = () => {
     }, [users, tokenStorage]);
 
     // Función para eliminar un usuario (por ahora solo muestra el correo en consola)
-    const deleteUser = (email) => {
-        console.log(email);
+    const deleteUser = async (userId) => {
+        try {
+            const fetched = await DeleteUsers(userId, tokenStorage);
+            if (!fetched.success) {
+                return setMsgError(fetched.message);
+            }
+            setMsgSuccess(fetched.message);
+        } catch (error) {
+            setMsgError(error.message);
+        }
     };
 
     return (
@@ -35,10 +46,11 @@ export const SuperAdminPanel = () => {
             <Header />
             <div className="superAdminPanelDesign">
                 {users.length > 0 ? (
-                    // Si hay usuarios, muestra la lista
                     <div className="superAdminPanelDesign">
+                        <div className="error">{msgError}</div>
+                        <div className="success">{msgSuccess}</div>
                         {users.map((user) => (
-                            <div key={user.email}>
+                            <div key={user.id}>
                                 <ProfileCard
                                     first_name={user.first_name}
                                     last_name={user.last_name}
@@ -47,7 +59,7 @@ export const SuperAdminPanel = () => {
                                 <CustomButton
                                     className={"customButtonDesign"}
                                     title={"Delete User"}
-                                    functionEmit={() => deleteUser(user.email)}
+                                    functionEmit={() => deleteUser(user.id)}
                                 />
                             </div>
                         ))}
@@ -55,10 +67,10 @@ export const SuperAdminPanel = () => {
                 ) : (
                     // Si no hay usuarios, muestra un mensaje de carga
                     <div className="superAdminPanelDesign">
-                        <p>Loading users...</p>
-                    </div>
-                )}
-            </div>
-        </>
-    );
+                    <p>Services are coming</p>
+                </div>
+            )}
+        </div>
+    </>
+);
 };
