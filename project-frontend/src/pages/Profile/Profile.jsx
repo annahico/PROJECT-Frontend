@@ -1,251 +1,237 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Header } from "../../common/Header/Header";
 import { AppointmentCard } from "../../components/AppointmentCard/AppointmentCard";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { ProfileCard } from "../../components/ProfileCard/ProfileCard";
-import {
-  DeleteUserAppointment,
-  GetAppointments,
-  GetProfile,
-  PostAppointment,
-  UpdateProfile,
-} from "../../services/apiCalls";
+import { DeleteUserAppointment, GetAppointments, GetProfile, PostAppointment, UpdateProfile } from "../../services/apiCalls";
+// import { validame } from "../../utils/functions";
 import "./Profile.css";
 
 export const Profile = () => {
-  const datosUser = JSON.parse(localStorage.getItem("passport")); // Obtener datos de usuario almacenados en localStorage
-  const navigate = useNavigate(); // Hook para navegación en React Router
-
-  const [appointments, setAppointments] = useState([]); // Estado para almacenar las citas del usuario
-  const [appointmentsCredentials, setAppointmentsCredentials] = useState({ // Estado para las credenciales de la nueva cita
+  const datosUser = JSON.parse(localStorage.getItem("passport"));
+  const navigate = useNavigate();
+  const [appointments, setAppointments] = useState([]);
+  const [appointmentsCredentials, setAppointmentsCredentials] = useState({
     appointment_date: "",
     service_id: "",
   });
-
-  const [write, setWrite] = useState(true); // Estado para controlar el modo de edición del perfil
-
-  const [tokenStorage, setTokenStorage] = useState(datosUser?.token); // Estado para almacenar el token de usuario
-  const [loadedData, setLoadedData] = useState(false); // Estado para indicar si los datos del usuario han sido cargados
-
-  const [user, setUser] = useState({ // Estado para almacenar los datos del usuario
+  const [write, setWrite] = useState("disabled");
+  const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
+  const [loadedData, setLoadedData] = useState(false);
+  const [user, setUser] = useState({
     first_name: "",
     last_name: "",
     email: "",
   });
-
-  const [userError, setUserError] = useState({ // Estado para manejar los errores de validación del usuario
+  const [userError, setUserError] = useState({
     first_nameError: "",
     last_nameError: "",
     emailError: "",
   });
+  const [msgError, setMsgError] = useState("");
+  const [msgSuccess, setMsgSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const appointmentInputHandler = (e) => {
+    setAppointmentsCredentials((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const inputHandler = (e) => {
+    setUser((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const checkError = (e) => {
+    const error = validame(e.target.name, e.target.value);
+    setUserError((prevState) => ({
+      ...prevState,
+      [e.target.name + "Error"]: error,
+    }));
+  };
 
   useEffect(() => {
-    // Efecto para redirigir al usuario a la página de inicio si no hay token
+    if (appointments.length === 0) {
+      const fetchAppointments = async () => {
+        try {
+          const fetched = await GetAppointments(tokenStorage);
+          setAppointments(fetched.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAppointments();
+    }
+  }, [appointments, tokenStorage]);
+
+  useEffect(() => {
     if (!tokenStorage) {
       navigate("/");
     }
   }, [tokenStorage, navigate]);
 
   useEffect(() => {
-    // Efecto para cargar las citas del usuario solo cuando no están cargadas previamente
-    const fetchAppointments = async () => {
-      try {
-        const fetched = await GetAppointments(tokenStorage); // Llamada a la API para obtener citas
-        setAppointments(fetched.data); // Actualizar el estado con las citas obtenidas
-      } catch (error) {
-        console.log("Error fetching appointments:", error);
-      }
-    };
-
-    if (appointments.length === 0) { // Verificar si no hay citas cargadas
-      fetchAppointments(); // Llamar a la función para cargar las citas
-    }
-  }, [appointments, tokenStorage]);
-
-  useEffect(() => {
-    // Efecto para cargar el perfil del usuario cuando se monta el componente
     const fetchUserProfile = async () => {
       try {
-        const fetched = await GetProfile(tokenStorage); // Llamada a la API para obtener perfil de usuario
-        setUser({ // Actualizar el estado con los datos del usuario obtenidos
+        const fetched = await GetProfile(tokenStorage);
+        setLoadedData(true);
+        setUser({
           first_name: fetched.data.first_name,
           last_name: fetched.data.last_name,
           email: fetched.data.email,
         });
-        setLoadedData(true); // Marcar que los datos han sido cargados
       } catch (error) {
-        console.log("Error fetching user profile:", error);
+        console.log(error);
       }
     };
-
-    if (!loadedData) { // Verificar si los datos aún no han sido cargados
-      fetchUserProfile(); // Llamar a la función para cargar el perfil del usuario
+    if (!loadedData) {
+      fetchUserProfile();
     }
   }, [loadedData, tokenStorage]);
 
-  const handleInput = (e) => {
-    // Función para manejar cambios en los campos del perfil
-    const { name, value } = e.target;
-    setUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleInputBlur = (e) => {
-    // Función para manejar la validación de los campos del perfil (a implementar)
-    const { name, value } = e.target;
-    const error = validateInput(name, value); // Llamar a función de validación (a implementar)
-    setUserError((prevState) => ({
-      ...prevState,
-      [`${name}Error`]: error,
-    }));
-  };
-
-  const updateProfile = async () => {
-    // Función para actualizar el perfil del usuario
+  const updateData = async () => {
     try {
-      const fetched = await UpdateProfile(tokenStorage, user); // Llamada a la API para actualizar perfil
-      setUser({ // Actualizar el estado con los nuevos datos del perfil
-        first_name: fetched.data.first_name,
-        last_name: fetched.data.last_name,
-        email: fetched.data.email,
+      setLoading(true);
+      const fetched = await UpdateProfile(tokenStorage, user);
+      setMsgSuccess(fetched.message);
+      setLoading(false);
+      setUser({
+        first_name: fetched.dataFetched.first_name,
+        last_name: fetched.dataFetched.last_name,
+        email: fetched.dataFetched.email,
       });
-      setWrite(true); // Habilitar el modo de edición después de la actualización
+      setWrite("disabled");
     } catch (error) {
-      console.log("Error updating profile:", error);
+      console.log(error);
     }
   };
 
   const createAppointment = async () => {
-    // Función para crear una nueva cita
     try {
-      await PostAppointment(tokenStorage, appointmentsCredentials); // Llamada a la API para crear cita
-      navigate("/profile"); // Redirigir a la página de perfil después de crear la cita
+      for (let key in appointmentsCredentials) {
+        if (appointmentsCredentials[key] === "") {
+          throw new Error("All fields must be filled");
+        }
+      }
+      setLoading(true);
+      const fetched = await PostAppointment(tokenStorage, appointmentsCredentials);
+      setMsgSuccess(fetched.message);
+      setLoading(false);
+      navigate("/profile");
+      setAppointments((prev) => [...prev, fetched.data]);
     } catch (error) {
-      console.log("Error creating appointment:", error);
+      setMsgError(error.message);
     }
   };
 
   const deleteAppointment = async (appointmentId) => {
-    // Función para eliminar una cita existente
     try {
-      await DeleteUserAppointment(appointmentId, tokenStorage); // Llamada a la API para eliminar cita
-      const updatedAppointments = appointments.filter( // Filtrar las citas para remover la cita eliminada
-        (appointment) => appointment.id !== appointmentId
-      );
-      setAppointments(updatedAppointments); // Actualizar el estado con las citas restantes
+      const fetched = await DeleteUserAppointment(appointmentId, tokenStorage);
+      setMsgSuccess(fetched.message);
+      setAppointments((prev) => prev.filter((app) => app.id !== appointmentId));
     } catch (error) {
-      console.log("Error deleting appointment:", error);
+      setMsgError(error.message);
     }
   };
 
   return (
     <>
-      <Header /> {/* Componente de encabezado común */}
+      <Header />
       <div className="profileDesign">
-        {!loadedData ? ( // Mostrar mensaje de carga si los datos aún no están disponibles
-          <div>CARGANDO</div>
+        <div className="error">{msgError}</div>
+        <div className="success">{msgSuccess}</div>
+        {loading && <span>Loading...</span>}
+        {!loadedData ? (
+          <div>Loading...</div>
         ) : (
           <div>
-            <ProfileCard // Componente para mostrar el perfil del usuario
+            <ProfileCard
               first_name={user.first_name}
               last_name={user.last_name}
               email={user.email}
             />
-
-            <CustomInput // Campo de entrada para el nombre
-              className={`inputDesign ${
-                userError.first_nameError ? "inputDesignError" : ""
-              }`}
+            <CustomInput
+              className={`inputDesign ${userError.first_nameError ? "inputDesignError" : ""}`}
               type="text"
-              placeholder=""
+              placeholder="First Name"
               name="first_name"
-              disabled={!write}
+              disabled={write}
               value={user.first_name}
-              onChange={handleInput}
-              onBlur={handleInputBlur}
+              onChangeFunction={inputHandler}
+              onBlurFunction={checkError}
             />
             <div className="error">{userError.first_nameError}</div>
-
-            <CustomInput // Campo de entrada para el apellido
-              className={`inputDesign ${
-                userError.last_nameError ? "inputDesignError" : ""
-              }`}
+            <CustomInput
+              className={`inputDesign ${userError.last_nameError ? "inputDesignError" : ""}`}
               type="text"
-              placeholder=""
+              placeholder="Last Name"
               name="last_name"
-              disabled={!write}
+              disabled={write}
               value={user.last_name}
-              onChange={handleInput}
-              onBlur={handleInputBlur}
+              onChangeFunction={inputHandler}
+              onBlurFunction={checkError}
             />
             <div className="error">{userError.last_nameError}</div>
-
-            <CustomInput // Campo de entrada para el correo electrónico (desactivado)
-              className="inputDesign"
+            <CustomInput
+              className={`inputDesign ${userError.emailError ? "inputDesignError" : ""}`}
               type="email"
-              placeholder=""
+              placeholder="Email"
               name="email"
-              disabled
+              disabled="disabled"
               value={user.email}
-              onChange={handleInput}
+              onChangeFunction={inputHandler}
+              onBlurFunction={checkError}
             />
-
-            <CustomButton // Botón para editar o confirmar la edición del perfil
-              className="customButtonDesign"
-              title={write ? "Edit" : "Confirm"}
-              functionEmit={write ? () => setWrite(false) : updateProfile}
+            <div className="error">{userError.emailError}</div>
+            <CustomButton
+              className={write === "" ? "customButtonGreen customButtonDesign" : "customButtonDesign"}
+              title={write === "" ? "Confirm" : "Edit"}
+              functionEmit={write === "" ? updateData : () => setWrite("")}
             />
           </div>
         )}
-
-        {appointments.map((appointment) => ( // Renderizado de las citas del usuario
+        {appointments.map((appointment) => (
           <div key={appointment.id}>
-            <AppointmentCard // Componente para mostrar detalles de cada cita
+            <AppointmentCard
               service_id={appointment.service.service_name}
               appointment_date={appointment.appointment_date}
             />
-            <CustomButton // Botón para eliminar una cita específica
+            <CustomButton
               className="customButtonDesign"
-              title="Delete appointment"
+              title="Delete Appointment"
               functionEmit={() => deleteAppointment(appointment.id)}
             />
           </div>
         ))}
-
-        <CustomInput // Campo de entrada para la fecha de la nueva cita
+        <pre>{JSON.stringify(appointmentsCredentials, null, 2)}</pre>
+        <CustomInput
           className="inputDesign"
           type="date"
-          placeholder=""
+          placeholder="Appointment Date"
           name="appointment_date"
           value={appointmentsCredentials.appointment_date}
-          onChange={handleInput}
+          onChangeFunction={appointmentInputHandler}
         />
-
-        <CustomInput // Campo de entrada para el ID del servicio de la nueva cita
+        <CustomInput
           className="inputDesign"
           type="text"
-          placeholder=""
+          placeholder="Service ID"
           name="service_id"
           value={appointmentsCredentials.service_id}
-          onChange={handleInput}
+          onChangeFunction={appointmentInputHandler}
         />
-
-        <CustomButton // Botón para crear una nueva cita
+        <CustomButton
           className="customButtonGreen"
-          title="Create appointment"
+          title="Create Appointment"
           functionEmit={createAppointment}
         />
       </div>
     </>
   );
-};
-
-// Función de validación de entrada (a implementar según requisitos específicos)
-const validateInput = (name, value) => {
-  // Implementar lógica de validación según los campos del perfil
-  return value.trim() === "" ? `${name} is required` : "";
 };
