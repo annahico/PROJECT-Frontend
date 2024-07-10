@@ -1,13 +1,105 @@
 .homeDesign {
-    /* ya se cambiará el color  */
-
     height: 28vh;
     width: 100vw;
-
     background-color: rgb(243, 243, 243);
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow-x: hidden;
+}
+
+.contentDesign {
+    font-family: "Josefin Sans", sans-serif;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5em;
+    margin-bottom: 5em;
+    padding-bottom: 5em;
+}
+
+.descriptionDesign {
+    width: 20em;
+    font-size: 1.36em;
+    margin-top: 1em;
+    margin-left: 3em;
+    margin-right: 3em;
+    display: flex;
+    border: 0.2em solid rgb(155, 0, 108);
+    background-color: rgb(41, 37, 37);
+    padding: 2em;
+    opacity: 0;
+    animation: slideFromLeftText 1.5s forwards;
+}
+
+@keyframes slideFromLeftText {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.titleDesign {
+    width: 100%;
+    display: block;
+    justify-content: flex-start;
+    margin-top: 1em;
+    font-size: 9em;
+    font-family: Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.descriptionImage {
+    display: flex;
+    margin-left: 3em;
+    margin-right: 3em;
+    border-radius: 0.5em;
+    transition: ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0;
+    animation: slideFromLeft 1.5s forwards;
+}
+
+@keyframes slideFromLeft {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.descriptionImage:hover {
+    transform: translateX(0);
 }
