@@ -13,7 +13,11 @@ export const validame = (type, value) => {
             }
 
             return "";
-
+        case "id":
+            if (!value) {
+                return "Por favor, introduzca una Id";
+            }
+            return "";
         case "email":
         case "e-mail":
         case "correo":
