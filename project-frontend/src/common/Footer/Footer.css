@@ -1,9 +1,0 @@
-.footerDesign {
-    /* ya se cambiará el color  */
-    height: 10vh;
-    width: 100vw;
-    background-color: rgb(248, 59, 239);
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
