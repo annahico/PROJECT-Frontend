@@ -1,44 +1,30 @@
-export const validame = (type, value) => {
+export const validate = (type, value) => {
     switch (type) {
         case "name":
-        case "nombre":
-        case "first_name":
-        case "service_name":
-        case "description":
-        case "last_name":
-        case "surname":
-        case "cognom":
+        case "firstName":
+        case "secondName":
             if (value.length < 3) {
-                return "Por favor, el nombre debe de tener mínimo tres caracteres.";
+                return "The name must be at least 3 characters long";
             }
+            return "";
 
-            return "";
-        case "id":
-            if (!value) {
-                return "Por favor, introduzca una Id";
-            }
-            return "";
         case "email":
         case "e-mail":
-        case "correo":
         case "mail":
-            const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
+            // eslint-disable-next-line no-case-declarations
+            const emailRegex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
             if (!emailRegex.test(value)) {
-                return "Por favor, el formato del email debe de ser correcto.";
+                return "The email format is incorrect";
             }
-
             return "";
 
         case "password":
-        case "password_hash":
-        case "contraseña":
             if (value.length < 6 || value.length > 10) {
-                return "La contraseña debe de tener un minimo de 6 caracteres y un maximo de 10";
+                return "The password must be between 6 and 10 characters long";
             }
-
             return "";
+
         default:
-            console.log("Something went wrong!");
+            return "Default message";
     }
 };

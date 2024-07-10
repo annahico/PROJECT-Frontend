@@ -1,205 +1,93 @@
-const root = "http://localhost:4000/api/";
-
-const fetchOptions = (method, body = null, token = null) => {
-    const headers = {
-        "Content-Type": "application/json",
-    };
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-    }
-    return {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : null,
-    };
-};
-
-const handleResponse = async (response) => {
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-    }
-    return data;
-};
+const root = "http://localhost:4000/api/"
 
 export const RegisterUser = async (user) => {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user)
+    };
     try {
-        const response = await fetch(`${root}auth/register`, fetchOptions("POST", user));
-        return await handleResponse(response);
+        const response = await fetch(`${root}auth/register`, options)
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data;
     } catch (error) {
         return error;
     }
 };
 
-export const LoginUser = async (credentials) => {
+export const LoginUser = async (credenciales) => {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credenciales)
+    };
     try {
-        const response = await fetch(`${root}auth/login`, fetchOptions("POST", credentials));
-        return await handleResponse(response);
+        const response = await fetch(`${root}auth/login`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data;
     } catch (error) {
         return error;
     }
 };
 
 export const GetProfile = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    };
     try {
-        const response = await fetch(`${root}user/profile`, fetchOptions("GET", null, token));
-        return await handleResponse(response);
+        const response = await fetch(`${root}users/profile`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data;
     } catch (error) {
         return error;
     }
 };
 
 export const UpdateProfile = async (token, data) => {
-    try {
-        const response = await fetch(`${root}user/profile`, fetchOptions("PUT", data, token));
-        return await handleResponse(response);
-    } catch (error) {
-        return error;
-    }
-};
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    };
 
-export const GetAppointments = async (token) => {
     try {
-        const response = await fetch(`${root}appointments`, fetchOptions("GET", null, token));
-        return await handleResponse(response);
-    } catch (error) {
-        return error;
-    }
-};
-
-export const PostAppointment = async (token, appointmentsCredentials) => {
-    try {
-        const response = await fetch(`${root}appointments`, fetchOptions("POST", appointmentsCredentials, token));
-        return await handleResponse(response);
+        const response = await fetch(`${root}users/profile`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data;
     } catch (error) {
         return error;
     }
 };
 
 export const GetServices = async () => {
-    try {
-        const response = await fetch(`${root}services`, fetchOptions("GET"));
-        return await handleResponse(response);
-    } catch (error) {
-        return error;
-    }
-};
-
-export const DeleteUserAppointment = async (appointmentId, token) => {
-    try {
-        const response = await fetch(`${root}appointments/${appointmentId}`, fetchOptions("DELETE", null, token));
-        return await handleResponse(response);
-    } catch (error) {
-        return error;
-    }
-};
-
-export const GetUsers = async (token) => {
-    try {
-        const response = await fetch(`${root}users`, fetchOptions("GET", null, token));
-        return await handleResponse(response);
-    } catch (error) {
-        return error;
-    }
-}
-
-export const DeleteUsers = async (userId, token) => {
-    const options = {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    };
-    try {
-        const response = await fetch(`${root}users/${userId}`, options);
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-
-        return data;
-    } catch (error) {
-        return error;
-    }
-}
-export const SeeUsersProfile = async (userId, token) => {
     const options = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    };
-    try {
-        const response = await fetch(`${root}users/${userId}`, options);
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-
-        return data;
-    } catch (error) {
-        return error;
-    }
-}
-export const GetAppointmentsUsersProfile = async (userId, token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    };
-    try {
-        const response = await fetch(`${root}${userId}/appointments`, options);
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-
-        return data;
-    } catch (error) {
-        return error;
-    }
-
-}
-export const DeleteServiceById = async (serviceId, token) => {
-    const options = {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    };
-    try {
-        const response = await fetch(`${root}services/${serviceId}`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data
-
-    } catch (error) {
-        return error;
-    }
-
-
-}
-export const PostService = async (appointmentsCredentials, token) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(appointmentsCredentials)
     };
     try {
         const response = await fetch(`${root}services`, options);
@@ -207,53 +95,114 @@ export const PostService = async (appointmentsCredentials, token) => {
         if (!data.success) {
             throw new Error(data.message);
         }
-        return data
-
+        const servicesData = data.data;
+        return servicesData;
     } catch (error) {
         return error;
     }
-
 }
-export const UpdateServiceById = async (servicesCredentials, ServiceId, token) => {
+
+
+export const GetAppointment = async (token) => {
     const options = {
-        method: "PUT",
+        method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(servicesCredentials)
     };
     try {
-        const response = await fetch(`${root}services/${ServiceId}`, options);
+        const response = await fetch(`${root}appointments`, options);
         const data = await response.json();
         if (!data.success) {
             throw new Error(data.message);
         }
-        return data
-
+        return data;
     } catch (error) {
         return error;
     }
-
 }
-export const UpdateUserById = async (userCredentials, UserId, token) => {
+
+export const DeleteAppointment = async (token, data) => {
     const options = {
-        method: "PUT",
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(userCredentials)
+        body: JSON.stringify({ "id": data })
     };
     try {
-        const response = await fetch(`${root}users/${UserId}`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
+        const response = await fetch(`${root}appointments`, options);
+        const responseData = await response.json();
+        if (!responseData.success) {
+            throw new Error(responseData.message);
         }
-        return data
-
+        return responseData;
     } catch (error) {
         return error;
     }
 };
+
+export const GetUsers = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    };
+    try {
+        const response = await fetch(`${root}users`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        const servicesData = data.data;
+        return servicesData;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export const DeleteUser = async (token, data) => {
+    const options = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    };
+    try {
+        const response = await fetch(`${root}users/${data.id}`, options);
+        const responseData = await response.json();
+        if (!responseData.success) {
+            throw new Error(responseData.message);
+        }
+        return responseData;
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
+export const CreateAppointment = async (token, data) => {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    };
+    try {
+        const response = await fetch(`${root}appointments`, options);
+        const responseData = await response.json();
+        if (!responseData.success) {
+            throw new Error(responseData.message);
+        }
+        return responseData;
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+}
