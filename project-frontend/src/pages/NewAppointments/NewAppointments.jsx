@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Header } from '../../common/Header/Header';
 import { CreateAppointment } from "../../services/apiCalls";
@@ -13,14 +13,11 @@ const NewAppointment = () => {
 
     const inputHandler = (e) => {
         const { name, value } = e.target;
-
         let newValue = value;
-
         if (name === 'appointmentDate') {
-            const date = dayjs(value).format("YYYY-MM-DDTHH:mm");
-            newValue = date;
+            // const date = dayjs(value).format("YYYY-MM-DDTHH:mm");
+            // newValue = date;
         }
-
         setAppointmentData((prevState) => ({
             ...prevState,
             [name]: newValue,
@@ -32,7 +29,6 @@ const NewAppointment = () => {
         try {
             const passport = JSON.parse(localStorage.getItem("passport"));
             const token = passport.token;
-
             const response = await CreateAppointment(token, appointmentData);
             if (response.success) {
                 setMessage(response.message);

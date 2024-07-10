@@ -18,7 +18,6 @@ export const Header = () => {
             }
         };
         window.addEventListener("scroll", handleScroll);
-
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
@@ -28,11 +27,10 @@ export const Header = () => {
         localStorage.removeItem("passport");
         navigate("/login");
     };
-
     return (
         <div className={headerScroll ? "headerDesign scrolled" : "headerDesign"}>
             <CustomLink
-                title={"InkSoul"}
+                title={"Tattoo"}
                 destination={"/"}
             />
             <CustomLink

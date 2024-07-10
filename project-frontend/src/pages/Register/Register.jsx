@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomInput } from "../../common/Custominput/Custominput";
+import { CustomButton } from "../../common/CustomButton/CustomButton";
+import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
-import { CustomButton } from "../../common/customButton/customButton";
 import { RegisterUser } from "../../services/apiCalls";
-import { validate } from "../../utils/functions";
+import { validate } from "../../utils/function";
 import "./Register.css";
 
 export const Register = () => {

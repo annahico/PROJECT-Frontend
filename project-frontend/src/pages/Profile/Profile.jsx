@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomButton } from "../../common/customButton/customButton";
-import { CustomInput } from "../../common/Custominput/Custominput";
+import { CustomButton } from "../../common/CustomButton/CustomButton";
+import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
 import { GetProfile, UpdateProfile } from "../../services/apiCalls";
-import { validate } from "../../utils/functions";
+import { validate } from "../../utils/function";
 import "./Profile.css";
 
 export const Profile = () => {

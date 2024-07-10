@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
-import { CustomButton } from "../../common/customButton/customButton";
-import { CustomInput } from "../../common/Custominput/Custominput";
+import { CustomButton } from "../../common/CustomButton/CustomButton";
+import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
 import { LoginUser } from "../../services/apiCalls";
-import { validate } from "../../utils/functions";
+import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {

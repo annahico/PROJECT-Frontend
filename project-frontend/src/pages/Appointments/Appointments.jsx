@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useEffect, useState } from "react";
 import { ServiceCard } from '../../common/Card/Card';
 import { Header } from "../../common/Header/Header";
@@ -10,7 +10,6 @@ export const Appointment = () => {
     const [tokenStorage, setTokenStorage] = useState(dataUser?.token);
     const [loadedData, setLoadedData] = useState(false);
     const [appointments, setAppointments] = useState([]);
-
     useEffect(() => {
         const getUserAppointment = async () => {
             try {
@@ -21,14 +20,12 @@ export const Appointment = () => {
                         id: appointment.id,
                     };
                 });
-
                 setAppointments(formattedAppointments);
                 setLoadedData(true);
             } catch (error) {
                 return error;
             }
         };
-
         if (!loadedData) {
             getUserAppointment();
         }
@@ -39,9 +36,7 @@ export const Appointment = () => {
             if (appointmentId === null || appointmentId === undefined || appointmentId === "") {
                 throw new Error("The appointment ID is invalid");
             }
-
             const result = await DeleteAppointment(tokenStorage, appointmentId);
-
             if (result.success) {
                 setLoadedData(false);
                 window.location.reload();
@@ -52,7 +47,6 @@ export const Appointment = () => {
             return "Error deleting the appointment:", error;
         }
     };
-
     return (
         <>
             <Header />
@@ -67,7 +61,7 @@ export const Appointment = () => {
                                 <ServiceCard
                                     key={appointment.id}
                                     service={<span>Service: {appointment.service.name}</span>}
-                                    appointmentDate={<span>Requested Date: {appointment.appointmentDate ? dayjs(appointment.appointmentDate).format('DD/MM/YYYY HH:mm') : 'Date not available'}</span>}
+                                    // appointmentDate={<span>Requested Date: {appointment.appointmentDate ? dayjs(appointment.appointmentDate).format('DD/MM/YYYY HH:mm') : 'Date not available'}</span>}
                                     onDelete={() => deleteAppointment(appointment.id)}
                                 />
                             );
