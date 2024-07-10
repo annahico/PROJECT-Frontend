@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../../common/Header/Header";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { ServicesCard } from "../../components/ServicesCard/ServicesCard";
-import { DeleteServiceById, GetServices, PostService } from "../../services/apiCalls";
+import { DeleteServiceById, GetServices, PostService, UpdateServiceById } from "../../services/apiCalls";
 import { validame } from "../../utils/functions";
 import "./SuperAdminPanelServices.css";
 
@@ -11,6 +11,7 @@ export const SuperAdminPanelServices = () => {
     const datosUser = JSON.parse(localStorage.getItem("passport"));
 
     const [serviceError, setServiceError] = useState({
+        idError: "",
         service_nameError: "",
         descriptionError: "",
     });
@@ -18,10 +19,10 @@ export const SuperAdminPanelServices = () => {
     const [msgSuccess, setMsgSuccess] = useState("");
     const [loading, setLoading] = useState(false);
     const [write, setWrite] = useState("disabled");
-    const [tokenStorage] = useState(datosUser?.token);
-
+    const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
     const [services, setServices] = useState([]);
     const [servicesCredentials, setServicesCredentials] = useState({
+        id: "",
         service_name: "",
         description: "",
     });
@@ -41,19 +42,19 @@ export const SuperAdminPanelServices = () => {
         }));
     };
 
-    const bringData = useCallback(async () => {
+    const BringData = async () => {
         try {
             const fetched = await GetServices();
             setServices(fetched.data);
         } catch (error) {
-            setMsgError(error.message);
+            setMsgError(error);
         }
-    }, []);
+    };
 
-    const createService = async () => {
+    const CreateService = async () => {
         try {
-            for (let elemento in servicesCredentials) {
-                if (servicesCredentials[elemento] === "") {
+            for (let key in servicesCredentials) {
+                if (servicesCredentials[key] === "") {
                     throw new Error("Todos los campos tienen que estar rellenos");
                 }
             }
@@ -66,37 +67,46 @@ export const SuperAdminPanelServices = () => {
             setMsgSuccess(fetched.message);
             setLoading(false);
             setTimeout(() => {
-                bringData();
+                BringData();
             }, 1000);
         } catch (error) {
-            setMsgError(error.message);
+            setMsgError(error);
         }
     };
 
     useEffect(() => {
         if (services.length === 0) {
-            bringData();
+            BringData();
         }
-    }, [services, bringData]);
+    }, [services]);
 
-    const updateData = (serviceId) => {
-        console.log(serviceId);
-        setWrite("disabled");
+    const UpdateService = async (serviceId) => {
+        try {
+            const fetched = await UpdateServiceById(servicesCredentials, serviceId, tokenStorage);
+            if (!fetched.success) {
+                return setMsgError(fetched.message);
+            }
+            setMsgSuccess(fetched.message);
+            setTimeout(() => {
+                BringData();
+            }, 1000);
+        } catch (error) {
+            setMsgError(error);
+        }
     };
 
-    const deleteService = async (serviceId) => {
+    const DeleteService = async (serviceId) => {
         try {
             const fetched = await DeleteServiceById(serviceId, tokenStorage);
             if (!fetched.success) {
-                setMsgError(fetched.message);
-            } else {
-                setMsgSuccess(fetched.message);
-                setTimeout(() => {
-                    bringData();
-                }, 2000);
+                return setMsgError(fetched.message);
             }
+            setMsgSuccess(fetched.message);
+            setTimeout(() => {
+                BringData();
+            }, 2000);
         } catch (error) {
-            setMsgError(error.message);
+            setMsgError(error);
         }
     };
 
@@ -109,13 +119,14 @@ export const SuperAdminPanelServices = () => {
                         {services.map((service) => (
                             <div key={service.id}>
                                 <ServicesCard
+                                    service_id={service.id}
                                     service_name={service.service_name}
                                     description={service.description}
                                 />
                                 <CustomButton
-                                    className={"customButtonDesign"}
-                                    title={"Borrar"}
-                                    functionEmit={() => deleteService(service.id)}
+                                    className="customButtonDesign"
+                                    title="Borrar"
+                                    functionEmit={() => DeleteService(service.id)}
                                 />
                             </div>
                         ))}
@@ -126,29 +137,44 @@ export const SuperAdminPanelServices = () => {
                     </div>
                 )}
                 <CustomInput
-                    className={`inputDesign ${serviceError.service_nameError !== "" ? "inputDesignError" : ""}`}
-                    type={"text"}
-                    placeholder={"service_name"}
-                    name={"service_name"}
-                    value={servicesCredentials.service_name || ""}
+                    className={`inputDesign ${serviceError.idError ? "inputDesignError" : ""}`}
+                    type="text"
+                    placeholder="serviceId"
+                    name="id"
+                    value={servicesCredentials.id}
+                    onChangeFunction={inputHandler}
+                    onBlurFunction={checkError}
+                />
+                <div className="error">{serviceError.idError}</div>
+                <CustomInput
+                    className={`inputDesign ${serviceError.service_nameError ? "inputDesignError" : ""}`}
+                    type="text"
+                    placeholder="service_name"
+                    name="service_name"
+                    value={servicesCredentials.service_name}
                     onChangeFunction={inputHandler}
                     onBlurFunction={checkError}
                 />
                 <div className="error">{serviceError.service_nameError}</div>
                 <CustomInput
-                    className={`inputDesign ${serviceError.descriptionError !== "" ? "inputDesignError" : ""}`}
-                    type={"text"}
-                    placeholder={"description"}
-                    name={"description"}
-                    value={servicesCredentials.description || ""}
+                    className={`inputDesign ${serviceError.descriptionError ? "inputDesignError" : ""}`}
+                    type="text"
+                    placeholder="description"
+                    name="description"
+                    value={servicesCredentials.description}
                     onChangeFunction={inputHandler}
                     onBlurFunction={checkError}
                 />
                 <div className="error">{serviceError.descriptionError}</div>
                 <CustomButton
-                    className={"customButtonDesign"}
-                    title={"Crear cita"}
-                    functionEmit={createService}
+                    className="customButtonDesign"
+                    title="Crear servicio"
+                    functionEmit={CreateService}
+                />
+                <CustomButton
+                    className="customButtonDesign"
+                    title="Actualizar servicio"
+                    functionEmit={() => UpdateService(servicesCredentials.id)}
                 />
                 <div className="error">{msgError}</div>
                 <div className="success">{msgSuccess}</div>
