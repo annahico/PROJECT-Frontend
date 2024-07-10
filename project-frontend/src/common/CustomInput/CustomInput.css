@@ -1,10 +1,11 @@
 .inputDesign {
     height: 3em;
     width: 18em;
-
-    border: 0.2em solid black;
+    border: 0.2em solid rgb(29, 28, 28);
     border-radius: 0.5em;
     margin: 1em;
+    background-color: rgb(260, 260, 260);
+    color: black;
 }
 
 .inputDesign:focus {
@@ -12,5 +13,5 @@
 }
 
 .inputDesignError {
-    border: 0.2em solid rgb(127, 30, 172);
+    border: 0.2em solid rgb(168, 12, 77);
 }

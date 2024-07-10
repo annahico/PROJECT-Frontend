@@ -1,15 +1,10 @@
 .customButtonDesign {
-    /* ya se cambiará el color  */
-
     height: 3em;
     width: 18em;
-
     border-radius: 0.5em;
-
     background-color: rgb(138, 75, 255);
     color: white;
     font-weight: bold;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +12,6 @@
 }
 
 .customButtonDesign:hover {
-
     cursor: pointer;
     transition: 0.2s;
     background-color: rgb(68, 1, 107);
