@@ -212,4 +212,26 @@ export const PostService = async (appointmentsCredentials, token) => {
     } catch (error) {
         return error;
     }
+
+}
+export const UpdateServiceById = async (servicesCredentials, ServiceId, token) => {
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(servicesCredentials)
+    };
+    try {
+        const response = await fetch(`${root}services/${ServiceId}`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data
+
+    } catch (error) {
+        return error;
+    }
 };
