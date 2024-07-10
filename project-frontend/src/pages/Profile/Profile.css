@@ -1,7 +1,7 @@
 .profileDesign {
     height: 100vh;
     width: 100vw;
-    background-color: rgb(15, 2, 12);
+    background-color: rgb(31, 2, 23);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

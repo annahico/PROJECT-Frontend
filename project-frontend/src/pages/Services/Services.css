@@ -2,11 +2,95 @@
 
     height: 100vh;
     width: 100vw;
-
-    background-color: rgb(252, 151, 0);
-
+    background-color: rgb(31, 2, 23);
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    background-image: url;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow-x: hidden;
+}
+
+.cardsRoster {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    position: relative;
+    padding-bottom: 6em;
+    z-index: 2;
+    margin-top: 3%;
+    opacity: 0;
+    transform: translateY(-100%);
+    animation: slideFromTop 2s forwards;
+}
+
+@keyframes slideFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.serviceName {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: whitesmoke;
+    line-height: 3;
+}
+
+.serviceDescription {
+    font-size: 1em;
+    color: whitesmoke;
+}
+
+.titleGaleryDesign {
+    font-weight: bold;
+    font-size: 3em;
+    color: whitesmoke;
+    line-height: 3;
+    text-align: left;
+    margin-top: 3%;
+    padding-left: 3em;
+}
+
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagenGaleriyDesign {
+    display: flex;
+    margin: 3em;
+    flex-wrap: wrap;
+    border-radius: 0.5em;
+    bottom: 0;
+    transition: transform 1.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0;
+    transform: translateY(-100%);
+    animation: slideFromTop 2s forwards;
+}
+
+@keyframes slideFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

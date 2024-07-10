@@ -1,49 +1,68 @@
 import { useEffect, useState } from "react";
+import { Card } from "../../common/Card/Card";
 import { Header } from "../../common/Header/Header";
-import { ServicesCard } from "../../components/ServicesCard/ServicesCard";
 import { GetServices } from "../../services/apiCalls";
 import "./Services.css";
 
-const Services = () => {
-  const [services, setServices] = useState([]);
+export const Services = () => {
+    const [services, setServices] = useState([]);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const fetched = await GetServices();
-        setServices(fetched.data);
-      } catch (error) {
-        console.log(error);
-      }
+    useEffect(() => {
+        if (services.length === 0) {
+            const bringData = async () => {
+                try {
+                    const fetched = await GetServices();
+                    setServices(fetched);
+                } catch (error) {
+                    return error;
+                }
+            };
+
+            bringData();
+        }
+    }, [services]);
+
+    const clickedService = (service) => {
+        return service;
     };
 
-    if (services.length === 0) {
-      fetchServices();
-    }
-  }, [services]);
-
-  return (
-    <>
-      <Header />
-      <div className="servicesDesign">
-        {services.length > 0 ? (
-          <div className="servicesList">
-            {services.map((service, index) => (
-              <ServicesCard
-                key={index}
-                service_name={service.service_name}
-                description={service.description}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="servicesLoading">
-            <p>Services are loading...</p>
-          </div>
-        )}
-      </div>
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <div className="servicesDesign">
+                <div className="titleDesign">
+                    Our Services
+                </div>
+                {services.length > 0 ? (
+                    <div className="cardsRoster">
+                        {services.map((service) => {
+                            return (
+                                <Card
+                                    key={service.id}
+                                    name={<span className="serviceName">{service.name}</span>}
+                                    description={<span className="serviceDescription">{service.description}</span>}
+                                    clickFunction={() => clickedService(service)}
+                                />
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div>Loading services...</div>
+                )}
+                <div className="titleGalleryDesign">
+                    See Our Work
+                </div>
+                <div className="section">
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                </div>
+            </div>
+        </>
+    );
 };
-
-export default Services;
