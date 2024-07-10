@@ -5,7 +5,7 @@ import { Header } from "../../common/Header/Header";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { LoginUser } from "../../services/apiCalls";
-// import { validame } from "../../utils/functions";
+import { validame } from "../../utils/functions";
 import "./Login.css";
 
 const datosUser = JSON.parse(localStorage.getItem("passport"));

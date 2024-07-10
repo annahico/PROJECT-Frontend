@@ -6,7 +6,7 @@ import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { ProfileCard } from "../../components/ProfileCard/ProfileCard";
 import { DeleteUserAppointment, GetAppointments, GetProfile, PostAppointment, UpdateProfile } from "../../services/apiCalls";
-// import { validame } from "../../utils/functions";
+import { validame } from "../../utils/functions";
 import "./Profile.css";
 
 export const Profile = () => {

@@ -4,7 +4,7 @@ import { Login } from "../../pages/Login/Login";
 import { Profile } from "../../pages/Profile/Profile";
 import { Register } from "../../pages/Register/Register";
 import { Services } from "../../pages/Services/Services";
-import { SuperAdminPanel } from "../../pages/SuperAdminPanel/SuperAdmin";
+import { SuperAdminPanel } from "../../pages/SuperAdmiPanel/SuperAdmin";
 import { SuperAdminPanelServices } from "../../pages/SuperAdminPanelServices/SuperAdminPanelServices"; // Importación corregida
 
 export const Body = () => {

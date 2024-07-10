@@ -4,7 +4,7 @@ import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { ServicesCard } from "../../components/ServicesCard/ServicesCard";
 import { DeleteServiceById, GetServices, PostService } from "../../services/apiCalls";
-// import { validame } from "../../utils/functions";
+import { validame } from "../../utils/functions";
 import "./SuperAdminPanelServices.css";
 
 export const SuperAdminPanelServices = () => {
