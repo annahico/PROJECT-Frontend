@@ -9,7 +9,7 @@ export const CustomLink = ({ title, destination }) => {
     // Retorna un div con un estilo personalizado y funcionalidad de navegación
     return (
         <div 
-            className="customLinkDesign" 
+            className="navigateDesign" 
             onClick={() => navigate(destination)}
         >
             {title}
