@@ -6,11 +6,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-image: url;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     overflow-x: hidden;
+    background-image: url('../../img/fondo.jpg');
 }
 
 .cardsRoster {

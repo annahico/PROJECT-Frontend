@@ -1,7 +1,7 @@
 .headerDesign {
     height: 4vh;
     width: 100vw;
-    background-color: rgb(220, 80, 162);
+    background-color: rgb(5, 0, 3);
     color: whitesmoke;
     display: flex;
     flex-direction: row;
@@ -24,7 +24,7 @@
 .headerScroll {
     transition: 0.3s;
     opacity: 0;
-    color: rgb(220, 80, 162);
+    color: rgb(122, 0, 71);
 }
 
 .dropdown {

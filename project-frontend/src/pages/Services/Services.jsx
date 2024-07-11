@@ -53,8 +53,8 @@ export const Services = () => {
                     See Our Work
                 </div>
                 <div className="section">
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo1.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo2.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
                     <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
                     <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
                     <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
