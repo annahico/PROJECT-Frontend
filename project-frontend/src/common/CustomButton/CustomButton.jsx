@@ -1,4 +1,4 @@
-import "./customButton.css"
+import "./CustomButton.css"
 
 export const CustomButton = ({ className, title, functionEmit }) => {
     return (
