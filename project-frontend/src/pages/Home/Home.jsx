@@ -7,7 +7,7 @@ export const Home = () => {
             <Header />
             <div className="homeDesign">
                 <div className="titleDesign">
-                    InkSoul Studio
+                    Tattoo Studio
                 </div>
                 <div className="contentDesign">
                     <div className="section">
@@ -17,18 +17,21 @@ export const Home = () => {
                         </div>
                         <img src="" alt="Tattoo Studio" className="descriptionImage" />
                     </div>
+
                     <div className="section">
                         <img src="" alt="Tattoo Studio" className="descriptionImage" />
                         <div className="descriptionDesign">
                             We offer a wide range of services, from custom tattoos and artistic piercings to touch-ups and cover-ups. Additionally, we provide free consultations to discuss your ideas, answer your questions, and ensure you are completely satisfied with the design before starting the tattoo or piercing process.
                         </div>
                     </div>
+
                     <div className="section">
                         <div className="descriptionDesign">
                             We use only the best inks, needles, and materials available on the market to ensure high-quality, long-lasting results. Moreover, we keep up with the latest trends and techniques in the world of tattooing and piercing to offer you the best services possible.
                         </div>
                         <img src="" alt="Tattoo Studio" className="descriptionImage" />
                     </div>
+                    
                 </div>
             </div>
         </>

@@ -14,21 +14,4 @@ export const CustomInput = ({ className, type, placeholder, name, value, onChang
     );
 }
 
-// CustomInput.propTypes = {
-//     className: PropTypes.string,
-//     type: PropTypes.string.isRequired,
-//     placeholder: PropTypes.string,
-//     name: PropTypes.string.isRequired,
-//     value: PropTypes.oneOfType([
-//         PropTypes.string,
-//         PropTypes.number
-//     ]).isRequired,
-//     onChangeFunction: PropTypes.func.isRequired,
-//     onBlurFunction: PropTypes.func,
-// };
 
-// CustomInput.defaultProps = {
-//     className: '',
-//     placeholder: '',
-//     onBlurFunction: () => {},
-// };

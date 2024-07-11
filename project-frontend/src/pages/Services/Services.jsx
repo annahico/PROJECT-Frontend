@@ -53,14 +53,14 @@ export const Services = () => {
                     See Our Work
                 </div>
                 <div className="section">
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
-                    <img src="" alt="InkSoul Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
                 </div>
             </div>
         </>
