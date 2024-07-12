@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Admin } from "../Admin/Admin";
 import { Appointment } from "../Appointments/Appointments";
 import { Home } from "../Home/Home";
 import { Login } from "../Login/Login";
@@ -21,6 +22,7 @@ export const Body = () => {
             <Route path="/newappointments" element={<NewAppointment />} />
             <Route path="/users" element={<Users />} />
             <Route path="/users/:id" element={<Users />} />
+            <Route path="/admin" element={<Admin />} />
         </Routes>
     );
 };
