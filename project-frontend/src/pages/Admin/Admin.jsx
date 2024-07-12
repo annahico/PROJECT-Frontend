@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../common/Header/Header";
 import { Pagination } from "../../common/Pagination/Pagination";
-import { DeleteAppointment, DeleteService, DeleteUser, GetAllAppointments, GetServices, GetUsers } from "../../services/apiCalls";
+import { DeleteAppointment, DeleteUser, GetServices, GetUsers } from "../../services/apiCalls";
 import "./Admin.css";
 
 const numUserDisplay = 5;
@@ -12,7 +12,7 @@ const numAppointmentDisplay = 15;
 
 export const Admin = () => {
     const datosUser = JSON.parse(localStorage.getItem("passport"));
-    const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
+    const [tokenStorage] = useState(datosUser?.token);
     const navigate = useNavigate();
     const [loadedData, setLoadedData] = useState(false);
 
@@ -20,69 +20,45 @@ export const Admin = () => {
     const [services, setServices] = useState([]);
     const [appointments, setAppointments] = useState([]);
 
-    const [roleStorage, setRoleStorage] = useState(datosUser?.roleName);
+    const [roleStorage] = useState(datosUser?.roleName);
 
     const [currentPageU, setCurrentPageU] = useState(1);
     const [currentPageS, setCurrentPageS] = useState(1);
     const [currentPageA, setCurrentPageA] = useState(1);
 
-    const [usersPerPage] = useState(numUserDisplay); // Number of users per page
-    const [servicesPerPage] = useState(numServiceDisplay); // Number of services per page
-    const [appointmentsPerPage] = useState(numAppointmentDisplay); // Number of appointments per page
+    const [usersPerPage] = useState(numUserDisplay);
+    const [servicesPerPage] = useState(numServiceDisplay);
+    const [appointmentsPerPage] = useState(numAppointmentDisplay);
 
-    // control admin access only
     useEffect(() => {
         if (roleStorage !== 'superadmin') {
             navigate("/admin");
         }
     }, [roleStorage, navigate]);
 
-    // fetching info
     useEffect(() => {
-        fetchUsers();
-        fetchServices();
-        fetchAppointments();
-    }, []);
-
-    // geting users
-    const fetchUsers = async () => {
-        try {
-            if (!tokenStorage) {
-                throw new Error("Token is not available");
+        const fetchData = async () => {
+            try {
+                if (!tokenStorage) {
+                    throw new Error("Token is not available");
+                }
+                const [usersData, servicesData, appointmentData] = await Promise.all([
+                    GetUsers(tokenStorage),
+                    GetServices(),
+                    GetAllAppointments(tokenStorage),
+                ]);
+                setUsers(usersData);
+                setServices(servicesData.data);
+                setAppointments(appointmentData);
+                setLoadedData(true);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
             }
-            const usersData = await GetUsers(tokenStorage);
-            setLoadedData(true);
-            setUsers(usersData);
-        } catch (error) {
-            console.error('Get users failed:', error.message);
-        }
-    };
+        };
 
-    // geting services
-    const fetchServices = async () => {
-        try {
-            const responseServices = await GetServices(); //fetching function in apiCalls.js
-            setServices(responseServices.data); //we update data with the fetched response
-        } catch (error) {
-            console.error('Cannot fetch services:', error.message);
-        }
-    };
+        fetchData();
+    }, [tokenStorage]);
 
-    // geting appointments
-    const fetchAppointments = async () => {
-        try {
-            if (!tokenStorage) {
-                throw new Error("Token is not available");
-            }
-            const appointmentData = await GetAllAppointments(tokenStorage);
-            setLoadedData(true);
-            setAppointments(appointmentData);
-        } catch (error) {
-            console.error('Get appointments failed:', error.message);
-        }
-    };
-
-    //button deletes each user by id
     const deleteUser = async (id) => {
         try {
             await DeleteUser(tokenStorage, id);
@@ -92,7 +68,6 @@ export const Admin = () => {
         }
     };
 
-    //button deletes each service by id
     const deleteService = async (id) => {
         try {
             await DeleteService(tokenStorage, id);
@@ -102,7 +77,6 @@ export const Admin = () => {
         }
     };
 
-    //button deletes each appointment by id
     const deleteAppointment = async (id) => {
         try {
             await DeleteAppointment(tokenStorage, id);
@@ -112,22 +86,20 @@ export const Admin = () => {
         }
     };
 
-    const pageCountUsers = Math.ceil(users.length / numUserDisplay); // Calculate total number of pages for users
-    const pageCountServices = Math.ceil(services.length / numServiceDisplay); // Calculate total number of pages for services
-    const pageCountAppointments = Math.ceil(appointments.length / numAppointmentDisplay); // Calculate total number of pages for appointments
+    const pageCountUsers = Math.ceil(users.length / numUserDisplay);
+    const pageCountServices = Math.ceil(services.length / numServiceDisplay);
+    const pageCountAppointments = Math.ceil(appointments.length / numAppointmentDisplay);
 
-    // Pagination controls
     const handlePageClickUsers = ({ selected }) => {
-        setCurrentPageU(selected + 1); // Update current page for users
+        setCurrentPageU(selected + 1);
     };
     const handlePageClickServices = ({ selected }) => {
-        setCurrentPageS(selected + 1); // Update current page for services
+        setCurrentPageS(selected + 1);
     };
     const handlePageClickAppointments = ({ selected }) => {
-        setCurrentPageA(selected + 1); // Update current page for appointments
+        setCurrentPageA(selected + 1);
     };
 
-    // Pagination logic
     const indexOfLastUser = currentPageU * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
@@ -147,7 +119,7 @@ export const Admin = () => {
                 <div>
                     {/* USERS */}
                     <table className="table">
-                        <div className="div"> USERS: there are a total of {users.length} entries</div>
+                        <div className="div">USERS: there are a total of {users.length} entries</div>
                         <thead className="thead">
                             <tr className="tr th">
                                 <th className="pos">#</th>
@@ -181,7 +153,7 @@ export const Admin = () => {
 
                     {/* SERVICES */}
                     <table className="table">
-                        <div className="div"> SERVICES: there are a total of {services.length} entries</div>
+                        <div className="div">SERVICES: there are a total of {services.length} entries</div>
                         <thead className="thead">
                             <tr className="tr th">
                                 <th className="pos">#</th>
@@ -213,7 +185,7 @@ export const Admin = () => {
 
                     {/* APPOINTMENTS */}
                     <table className="table">
-                        <div className="div"> APPOINTMENTS: there are a total of {appointments.length} entries</div>
+                        <div className="div">APPOINTMENTS: there are a total of {appointments.length} entries</div>
                         <thead className="thead">
                             <tr className="tr th">
                                 <th className="pos">#</th>
