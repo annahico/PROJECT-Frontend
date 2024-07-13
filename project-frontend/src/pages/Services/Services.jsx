@@ -55,12 +55,12 @@ export const Services = () => {
                 <div className="section">
                     <img src="../../img/tattoo1.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
                     <img src="../../img/tattoo2.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
-                    <img src="" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo6.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo7.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo8.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo9.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo10.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
+                    <img src="../../img/tattoo11.jpg" alt="Tattoo Studio" className="imageGalleryDesign" />
                 </div>
             </div>
         </>

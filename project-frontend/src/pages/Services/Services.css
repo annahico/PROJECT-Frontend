@@ -72,6 +72,14 @@
 }
 
 .imagenGaleriyDesign {
+    width: 80%;
+    /* Ajusta la imagen al 100% del ancho del contenedor */
+    height: 80%;
+    /* Mantiene la proporción de la imagen */
+    max-width: 20em;
+    /* Asegura que la imagen no exceda el ancho de un contenedor típico */
+    max-height: 20em;
+    /* Asegura que la imagen no exceda la altura de un contenedor típico */
     display: flex;
     margin: 3em;
     flex-wrap: wrap;

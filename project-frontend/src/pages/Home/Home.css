@@ -80,6 +80,10 @@
 }
 
 .descriptionImage {
+    width: 100%;
+    height: auto;
+    max-width: 35em;
+    max-height: 100%;
     display: flex;
     margin-left: 3em;
     margin-right: 3em;
