@@ -10,7 +10,7 @@
 2. [Stack :gear:](#stack-gear)
 3. [Project :open_book:](#Project-open_book)
 4. [Link :dart:](#link-dart)
-5. [Author :wave:](#author-wave)
+5. [Developer :wave:](#developer-wave)
 
 ---
 
@@ -21,6 +21,11 @@ I recently completed a frontend project for a potential tattoo and piercing shop
 ---
 
 ## Stack :gear:
+
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
 ---
 
@@ -57,32 +62,42 @@ I recently completed a frontend project for a potential tattoo and piercing shop
 
 ### 2 - Info to log
 
-- Super_admin:
-
-```
-<!-- _id: "1",
-name: "super_admin",
-email: "super_admin@email.com",
-password: 123456,
-role: "super_admin" -->
-```
-
 - Admin:
 
 ```
-<!-- _id: "2",
-name: "admin",
-email: "'admin@email.com'",
+<!-- _id: "1",
+name: "Admin",
+email: "admin@example.com",
 password: 123456,
 role: "admin" -->
 ```
 
-- User:
+- Manager:
+
+```
+<!-- _id: "2",
+name: "Manager",
+email: "'manager@example.com'",
+password: 123456,
+role: "manager" -->
+```
+
+- Tattoo Artist:
 
 ```
 <!-- _id: "3",
+name: "'Tattoo Artist'",
+email: "'tatto-artist@example.com'",
+password: 123456,
+role: "tatto-artist" -->
+```
+
+- Customer:
+
+```
+<!-- _id: "4",
 name: "'user1'",
-email: "'user@email.com'",
+email: "'user@example.com'",
 password: 123456,
 role: "user" -->
 ```
@@ -112,19 +127,9 @@ role: "user" -->
 - There is no time restriction: past days and nighttime hours can be selected.
 - Services are chosen by ID, not by name. The order is as follows:
 
-    <!-- 1 = Tatuajes personalizados
-  
-  2 = Tatuajes del catálogo
-  
-  3 = Restauración y rejuvenecimiento de trabajos
-  
-  4 = Colocación de piercings y dilataciones
-  
-  5 = Venta de piercings y otros artículos -->
-
 <image src="" alt="New Appointment">
 
-6. User(only super_admin):
+6. User(only admin):
 
 <image src="" alt="Users">
 
@@ -146,7 +151,7 @@ https://github.com/annahico/PROJECT-Frontend
 
 ---
 
-## Author :wave:
+## Developer :wave:
 
 - **Anna Hidalgo Costa**
 - [GitHub](https://github.com/annahico) - [LinkedIn](https://www.linkedin.com/in/annahico/)
