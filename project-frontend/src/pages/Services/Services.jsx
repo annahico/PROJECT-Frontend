@@ -47,7 +47,7 @@ export const Services = () => {
                         })}
                     </div>
                 ) : (
-                    <div>Loading services...</div>
+                    <div></div>
                 )}
                 <div className="titleGalleryDesign">
                     See Our Work

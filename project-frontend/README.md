@@ -36,8 +36,9 @@ I recently completed a frontend project for a potential tattoo and piercing shop
 <h4>BackEnd</h4>
 
 - Go this root:
+  https://github.com/annahico/PROJECT-Tattoo
 
-- Clone repository: https://github.com/annahico/PROJECT-Tattoo
+- Clone repository
 
   `npm install`.
 
