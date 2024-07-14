@@ -1,16 +1,20 @@
 import "./CustomInput.css";
 
-export const CustomInput = ({ className, type, placeholder, name, value, onChangeFunction, onBlurFunction }) => {
+export const CustomInput = ({ design, type, name, placeholder, functionProp, functionBlur, msgError, disabled, value }) => {
     return (
-        <input 
-            className={className}
-            type={type}
-            placeholder={placeholder}
-            name={name}
-            value={value}
-            onChange={onChangeFunction}
-            onBlur={onBlurFunction}
+        <div>
+        <input
+          disabled={disabled}
+          className={design}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          value={value || ''}
+          onChange={functionProp}
+          onBlur={functionBlur}
         />
+        {msgError && <div className="error-message">{msgError}</div>}
+      </div>
     );
 }
 
