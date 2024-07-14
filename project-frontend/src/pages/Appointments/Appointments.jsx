@@ -1,4 +1,4 @@
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { useEffect, useState } from "react";
 import { ServiceCard } from '../../common/Card/Card';
 import { Header } from "../../common/Header/Header";
@@ -61,7 +61,7 @@ export const Appointment = () => {
                                 <ServiceCard
                                     key={appointment.id}
                                     service={<span>Service: {appointment.service.name}</span>}
-                                    // appointmentDate={<span>Requested Date: {appointment.appointmentDate ? dayjs(appointment.appointmentDate).format('DD/MM/YYYY HH:mm') : 'Date not available'}</span>}
+                                    appointmentDate={<span>Requested Date: {appointment.appointmentDate ? dayjs(appointment.appointmentDate).format('DD/MM/YYYY HH:mm') : 'Date not available'}</span>}
                                     onDelete={() => deleteAppointment(appointment.id)}
                                 />
                             );
