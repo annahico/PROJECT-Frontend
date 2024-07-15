@@ -125,8 +125,6 @@ role: "user" -->
 
 ### Bugs :collision:
 
-- There is no time restriction: past days and nighttime hours can be selected.
-- Services are chosen by ID, not by name. The order is as follows:
 
 <image src="" alt="New Appointment">
 
