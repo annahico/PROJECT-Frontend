@@ -11,8 +11,8 @@ export const Register = () => {
     const navigate = useNavigate();
 
     const [user, setUser] = useState({
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         password: "",
     });
@@ -70,9 +70,9 @@ export const Register = () => {
                 <CustomInput
                     className={`inputDesign ${userError.firstNameError ? "inputDesignError" : ""}`}
                     type={"text"}
-                    placeholder={"First Name"}
-                    name={"firstName"}
-                    value={user.firstName || ""}
+                    placeholder={"First_name"}
+                    name={"first_name"}
+                    value={user.first_name || ""}
                     onChangeFunction={(e) => inputHandler(e)}
                     onBlurFunction={(e) => checkError(e)}
                 />
@@ -81,9 +81,9 @@ export const Register = () => {
                 <CustomInput
                     className={`inputDesign ${userError.lastNameError ? "inputDesignError" : ""}`}
                     type={"text"}
-                    placeholder={"Last Name"}
-                    name={"lastName"}
-                    value={user.lastName || ""}
+                    placeholder={"Last_name"}
+                    name={"last_name"}
+                    value={user.last_name || ""}
                     onChangeFunction={(e) => inputHandler(e)}
                     onBlurFunction={(e) => checkError(e)}
                 />
