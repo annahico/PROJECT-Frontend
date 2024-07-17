@@ -15,14 +15,14 @@ export const Profile = () => {
     const [tokenStorage, setTokenStorage] = useState(dataUser?.token);
     const [loadedData, setLoadedData] = useState(false);
     const [user, setUser] = useState({
-        firstName: "",
-        secondName: "",
+        first_name: "",
+        last_name: "",
         email: "",
     });
 
     const [userError, setUserError] = useState({
-        firstNameError: "",
-        secondNameError: "",
+        first_nameError: "",
+        last_nameError: "",
         emailError: "",
     });
 
@@ -55,8 +55,8 @@ export const Profile = () => {
                 setLoadedData(true);
 
                 setUser({
-                    firstName: fetched.data.firstName,
-                    secondName: fetched.data.secondName,
+                    first_name: fetched.data.firstName,
+                    last_name: fetched.data.secondName,
                     email: fetched.data.email,
                 });
             } catch (error) {
