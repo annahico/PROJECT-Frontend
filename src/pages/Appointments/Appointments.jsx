@@ -2,30 +2,38 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from "react";
 import { ServiceCard } from '../../common/Card/Card';
 import { Header } from "../../common/Header/Header";
+import { useAuth } from '../../context/UseContext'; // Importar useAuth para usar el contexto
 import { DeleteAppointment, GetAppointment } from "../../services/apiCalls";
 import "./Appointments.css";
 
 export const Appointment = () => {
-    const dataUser = JSON.parse(localStorage.getItem("passport"));
-    const [tokenStorage, setTokenStorage] = useState(dataUser?.token);
+    const { userData } = useAuth(); // Usar useAuth para obtener los datos del usuario
+    const [tokenStorage, setTokenStorage] = useState(userData?.token);
     const [loadedData, setLoadedData] = useState(false);
     const [appointments, setAppointments] = useState([]);
+
     useEffect(() => {
         const getUserAppointment = async () => {
             try {
                 const fetched = await GetAppointment(tokenStorage);
-                const formattedAppointments = fetched.data.map((appointment) => {
-                    return {
-                        ...appointment,
-                        id: appointment.id,
-                    };
-                });
-                setAppointments(formattedAppointments);
+                if (fetched.data && Array.isArray(fetched.data)) {
+                    const formattedAppointments = fetched.data.map((appointment) => {
+                        return {
+                            ...appointment,
+                            id: appointment.id,
+                        };
+                    });
+                    setAppointments(formattedAppointments);
+                } else {
+                    setAppointments([]);
+                }
                 setLoadedData(true);
             } catch (error) {
-                return error;
+                console.error("Error fetching appointments:", error);
+                setLoadedData(true); // Update state to true to avoid infinite loop
             }
         };
+
         if (!loadedData) {
             getUserAppointment();
         }
@@ -33,7 +41,7 @@ export const Appointment = () => {
 
     const deleteAppointment = async (appointmentId) => {
         try {
-            if (appointmentId === null || appointmentId === undefined || appointmentId === "") {
+            if (!appointmentId) {
                 throw new Error("The appointment ID is invalid");
             }
             const result = await DeleteAppointment(tokenStorage, appointmentId);
@@ -44,9 +52,10 @@ export const Appointment = () => {
                 throw new Error(result.message || "Error deleting appointment");
             }
         } catch (error) {
-            return "Error deleting the appointment:", error;
+            console.error("Error deleting the appointment:", error);
         }
     };
+
     return (
         <>
             <Header />
@@ -67,10 +76,10 @@ export const Appointment = () => {
                             );
                         })
                     ) : (
-                        "null"
+                        <div>No appointments available</div>
                     )}
                 </div>
             </div>
         </>
     );
-}
+};

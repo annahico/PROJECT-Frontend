@@ -13,7 +13,7 @@ const numAppointmentDisplay = 15;
 
 export const Admin = () => {
     const { userData } = useAuth();  // Utiliza `useAuth` para obtener `userData`
-    const [tokenStorage] = useState(userData?.token);
+    const tokenStorage = userData?.token; 
     const navigate = useNavigate();
     const [loadedData, setLoadedData] = useState(false);
 
