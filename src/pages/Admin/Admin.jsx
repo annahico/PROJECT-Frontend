@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../common/Header/Header";
 import { Pagination } from "../../common/Pagination/Pagination";
+import { useAuth } from "../../context/UseContext"; // Actualiza a `useAuth`
 import { DeleteAppointment, DeleteUser, GetServices, GetUsers } from "../../services/apiCalls";
 import "./Admin.css";
 
@@ -11,8 +12,8 @@ const numServiceDisplay = 2;
 const numAppointmentDisplay = 15;
 
 export const Admin = () => {
-    const datosUser = JSON.parse(localStorage.getItem("passport"));
-    const [tokenStorage] = useState(datosUser?.token);
+    const { userData } = useAuth();  // Utiliza `useAuth` para obtener `userData`
+    const [tokenStorage] = useState(userData?.token);
     const navigate = useNavigate();
     const [loadedData, setLoadedData] = useState(false);
 
@@ -20,7 +21,7 @@ export const Admin = () => {
     const [services, setServices] = useState([]);
     const [appointments, setAppointments] = useState([]);
 
-    const [roleStorage] = useState(datosUser?.roleName);
+    const [roleStorage] = useState(userData?.roleName);
 
     const [currentPageU, setCurrentPageU] = useState(1);
     const [currentPageS, setCurrentPageS] = useState(1);
