@@ -17,12 +17,13 @@ export const useAuthContext = () => {
 
     const login = (userWithToken) => {
         setUserData(userWithToken);
-        setIsLoggedIn(true)
-        if (userWithToken.decoded.role === "ADMIN") { //falla
-            setIsAdmin(true)
+        setIsLoggedIn(true);
+        if (userWithToken && userWithToken.decoded && userWithToken.decoded.role === "ADMIN") {
+            setIsAdmin(true);
         }
         localStorage.setItem("userData", JSON.stringify(userWithToken));
     };
+
 
     const logout = () => {
         setUserData(null);

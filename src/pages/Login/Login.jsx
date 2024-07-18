@@ -47,22 +47,27 @@ export const Login = () => {
                     throw new Error("All fields must be filled out");
                 }
             }
-
+    
             const fetched = await LoginUser(credentials);
-            console.log(login);
-            login(fetched.token, fetched.user);
-
-            setMsgError(`Welcome back, ${fetched.user.firstName}`);
-
-            setTimeout(() => {
-                navigate("/");
-            }, 2000);
+            console.log(fetched); // Agregar console.log para depuración
+    
+            if (fetched && fetched.user && fetched.user.firstName) {
+                login(fetched.token, fetched.user);
+    
+                setMsgError(`Welcome back, ${fetched.user.firstName}`);
+    
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
+            } else {
+                throw new Error("Invalid user data received");
+            }
         } catch (error) {
             setMsgError(error.message);
-            console.log(error);
+            console.error("Error during login:", error);
         }
     };
-
+    
     return (
         <>
             <Header />
