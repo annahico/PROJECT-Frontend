@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../common/CustomButton/CustomButton";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { LoginUser } from "../../services/apiCalls";
 import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {
-    const { authState, login } = useContext(AuthContext);
+    const { login } = useAuth(); //equivalente en AuthContext
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({
         email: "",
@@ -23,11 +23,6 @@ export const Login = () => {
 
     const [msgError, setMsgError] = useState("");
 
-    useEffect(() => {
-        if (authState.token) {
-            navigate("/");
-        }
-    }, [authState.token, navigate]);
 
     const inputHandler = (e) => {
         setCredentials((prevState) => ({
@@ -54,6 +49,7 @@ export const Login = () => {
             }
 
             const fetched = await LoginUser(credentials);
+            console.log(login);
             login(fetched.token, fetched.user);
 
             setMsgError(`Welcome back, ${fetched.user.firstName}`);
@@ -63,6 +59,7 @@ export const Login = () => {
             }, 2000);
         } catch (error) {
             setMsgError(error.message);
+            console.log(error);
         }
     };
 

@@ -2,20 +2,23 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from "react";
 import { ServiceCard } from '../../common/Card/Card';
 import { Header } from "../../common/Header/Header";
-import { useAuth } from '../../context/AuthContext'; // Importar useAuth para usar el contexto
+import { useAuth } from '../../context/AuthContext';
 import { DeleteAppointment, GetAppointment } from "../../services/apiCalls";
 import "./Appointments.css";
 
 export const Appointment = () => {
-    const { userData } = useAuth(); // Usar useAuth para obtener los datos del usuario
-    const [tokenStorage, setTokenStorage] = useState(userData?.token);
+    const { userData } = useAuth(); 
     const [loadedData, setLoadedData] = useState(false);
     const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {
         const getUserAppointment = async () => {
+            if (!userData || !userData.token) {
+                return; 
+            }
+
             try {
-                const fetched = await GetAppointment(tokenStorage);
+                const fetched = await GetAppointment(userData.token);
                 if (fetched.data && Array.isArray(fetched.data)) {
                     const formattedAppointments = fetched.data.map((appointment) => {
                         return {
@@ -30,21 +33,24 @@ export const Appointment = () => {
                 setLoadedData(true);
             } catch (error) {
                 console.error("Error fetching appointments:", error);
-                setLoadedData(true); // Update state to true to avoid infinite loop
+                setLoadedData(true); // Actualizamos el estado para evitar bucle infinito
             }
         };
 
         if (!loadedData) {
             getUserAppointment();
         }
-    }, [tokenStorage, loadedData]);
+    }, [userData, loadedData]);
 
     const deleteAppointment = async (appointmentId) => {
         try {
             if (!appointmentId) {
                 throw new Error("The appointment ID is invalid");
             }
-            const result = await DeleteAppointment(tokenStorage, appointmentId);
+            if (!userData || !userData.token) {
+                throw new Error("User data or token is invalid");
+            }
+            const result = await DeleteAppointment(userData.token, appointmentId);
             if (result.success) {
                 setLoadedData(false);
                 window.location.reload();

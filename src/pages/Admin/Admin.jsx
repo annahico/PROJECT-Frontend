@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../common/Header/Header";
 import { Pagination } from "../../common/Pagination/Pagination";
-import { useAuth } from "../../context/AuthContext"; // Verificar ruta
+import { useAuth } from "../../context/AuthContext";
 import { DeleteAppointment, DeleteUser, GetAllAppointments, GetServices, GetUsers } from "../../services/apiCalls";
 import "./Admin.css";
 
