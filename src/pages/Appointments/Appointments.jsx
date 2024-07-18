@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from "react";
 import { ServiceCard } from '../../common/Card/Card';
 import { Header } from "../../common/Header/Header";
-import { useAuth } from '../../context/UseContext'; // Importar useAuth para usar el contexto
+import { useAuth } from '../../context/AuthContext'; // Importar useAuth para usar el contexto
 import { DeleteAppointment, GetAppointment } from "../../services/apiCalls";
 import "./Appointments.css";
 

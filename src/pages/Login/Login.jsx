@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-import { decodeToken } from "react-jwt";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../common/CustomButton/CustomButton";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
+import { AuthContext } from "../../context/AuthContext";
 import { LoginUser } from "../../services/apiCalls";
 import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {
-    const userData = JSON.parse(localStorage.getItem("passport"));
+    const { authState, login } = useContext(AuthContext);
     const navigate = useNavigate();
-    const [tokenStorage, setTokenStorage] = useState(userData?.token);
-
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
@@ -26,10 +24,10 @@ export const Login = () => {
     const [msgError, setMsgError] = useState("");
 
     useEffect(() => {
-        if (tokenStorage) {
+        if (authState.token) {
             navigate("/");
         }
-    }, [tokenStorage, navigate]);
+    }, [authState.token, navigate]);
 
     const inputHandler = (e) => {
         setCredentials((prevState) => ({
@@ -56,16 +54,9 @@ export const Login = () => {
             }
 
             const fetched = await LoginUser(credentials);
-            const decoded = decodeToken(fetched.token);
+            login(fetched.token, fetched.user);
 
-            const passport = {
-                token: fetched.token,
-                decoded: decoded,
-            };
-
-            localStorage.setItem("passport", JSON.stringify(passport));
-
-            setMsgError(`Welcome back, ${decoded.firstName}`);
+            setMsgError(`Welcome back, ${fetched.user.firstName}`);
 
             setTimeout(() => {
                 navigate("/");

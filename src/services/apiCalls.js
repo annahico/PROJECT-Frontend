@@ -1,7 +1,6 @@
-const root = "http://localhost:4000/api/"
+const root = "http://localhost:4000/api/";
 
 export const RegisterUser = async (user) => {
-    console.log(user);
     const options = {
         method: "POST",
         headers: {
@@ -10,7 +9,7 @@ export const RegisterUser = async (user) => {
         body: JSON.stringify(user)
     };
     try {
-        const response = await fetch(`${root}auth/register`, options)
+        const response = await fetch(`${root}auth/register`, options);
         const data = await response.json();
         if (!data.success) {
             throw new Error(data.message);
@@ -75,7 +74,7 @@ export const UpdateProfile = async (token, data) => {
         const response = await fetch(`${root}users/profile`, options);
         const data = await response.json();
         if (!data.success) {
-            throw new Error(data.message)
+            throw new Error(data.message);
         }
         return data;
     } catch (error) {
@@ -101,8 +100,7 @@ export const GetServices = async () => {
     } catch (error) {
         return error;
     }
-}
-
+};
 
 export const GetAppointment = async (token) => {
     const options = {
@@ -122,7 +120,7 @@ export const GetAppointment = async (token) => {
     } catch (error) {
         return error;
     }
-}
+};
 
 export const DeleteAppointment = async (token, data) => {
     const options = {
@@ -164,7 +162,7 @@ export const GetUsers = async (token) => {
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
 export const DeleteUser = async (token, data) => {
     const options = {
@@ -206,4 +204,25 @@ export const CreateAppointment = async (token, data) => {
     } catch (error) {
         return { success: false, message: error.message };
     }
-}
+};
+
+// Nueva función para obtener todas las citas
+export const GetAllAppointments = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    };
+    try {
+        const response = await fetch(`${root}appointments/all`, options);
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        return data.data;
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
