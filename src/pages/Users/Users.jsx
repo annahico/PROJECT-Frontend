@@ -1,28 +1,33 @@
 import { useEffect, useState } from "react";
 import { UserCard } from "../../common/Card/Card";
 import { Header } from "../../common/Header/Header";
+import { useAuth } from "../../context/AuthContext";
 import { DeleteUser, GetUsers } from "../../services/apiCalls";
 import "./Users.css";
 
 export const Users = () => {
-    const passport = JSON.parse(localStorage.getItem("passport"));
+    const { userData, isLoggedIn } = useAuth(); // Usa el contexto para obtener la información del usuario
     const [users, setUsers] = useState([]);
     const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
-        if (users.length === 0) {
-            const fetchData = async () => {
-                try {
-                    const fetched = await GetUsers(passport.token);
-                    setUsers(fetched);
-                } catch (error) {
-                    setErrorMsg("Error fetching users: " + error.message);
-                }
-            };
+        if (isLoggedIn && userData?.token) { // Verifica si el usuario está autenticado
+            if (users.length === 0) {
+                const fetchData = async () => {
+                    try {
+                        const fetched = await GetUsers(userData.token); // Usa el token del contexto
+                        setUsers(fetched);
+                    } catch (error) {
+                        setErrorMsg("Error fetching users: " + error.message);
+                    }
+                };
 
-            fetchData();
+                fetchData();
+            }
+        } else {
+            setErrorMsg("User not logged in or token not available.");
         }
-    }, [users, passport.token]);
+    }, [users, userData, isLoggedIn]); // Dependencias actualizadas
 
     const handleDelete = async (userId) => {
         try {
@@ -31,7 +36,7 @@ export const Users = () => {
                 return;
             }
 
-            const response = await DeleteUser(passport.token, { id: userId });
+            const response = await DeleteUser(userData.token, { id: userId }); // Usa el token del contexto
 
             if (!response.success) {
                 throw new Error(response.message || "Error deleting user");
@@ -53,18 +58,16 @@ export const Users = () => {
                 </div>
                 {users.length > 0 ? (
                     <div className="cardsRoster">
-                        {users.map(user => {
-                            return (
-                                <UserCard
-                                    key={user.id}
-                                    firstName={<span className="userFirstName">First Name: {user.firstName}</span>}
-                                    secondName={<span className="userSecondName">Last Name: {user.secondName}</span>}
-                                    email={<span className="userEmail">Email: {user.email}</span>}
-                                    onDelete={() => handleDelete(user.id)}
-                                    isDeletable={user.id !== 1}
-                                />
-                            );
-                        })}
+                        {users.map(user => (
+                            <UserCard
+                                key={user.id}
+                                firstName={<span className="userFirstName">First Name: {user.firstName}</span>}
+                                secondName={<span className="userSecondName">Last Name: {user.secondName}</span>}
+                                email={<span className="userEmail">Email: {user.email}</span>}
+                                onDelete={() => handleDelete(user.id)}
+                                isDeletable={user.id !== 1}
+                            />
+                        ))}
                     </div>
                 ) : (
                     <div>{errorMsg || "Users are coming."}</div>
