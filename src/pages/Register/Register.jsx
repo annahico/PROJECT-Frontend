@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../common/CustomButton/CustomButton";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { Header } from "../../common/Header/Header";
-import { RegisterUser } from "../../services/apiCalls";
+import { useAuth } from '../../context/AuthContext'; // Importar el contexto
 import { validate } from "../../utils/function";
 import "./Register.css";
 
 export const Register = () => {
     const navigate = useNavigate();
+    const { register } = useAuth(); // Obtener el método register del contexto
 
     const [user, setUser] = useState({
         first_name: "",
@@ -52,11 +53,13 @@ export const Register = () => {
                 }
             }
 
-            const fetched = await RegisterUser(user);
+            const fetched = await register(user); // Usar el método register del contexto
             setMsgError(fetched.message);
-            setTimeout(() => {
-                navigate("/");
-            }, 1200);
+            if (fetched.success) {
+                setTimeout(() => {
+                    navigate("/");
+                }, 1200);
+            }
         } catch (error) {
             setMsgError(error.message);
         }

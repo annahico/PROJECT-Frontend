@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Header } from '../../common/Header/Header';
+import { useAuth } from '../../context/AuthContext';
 import { CreateAppointment } from "../../services/apiCalls";
 import "./NewAppointments.css";
 
 const NewAppointment = () => {
+    const { auth } = useAuth(); // Obtener el estado de autenticación desde el contexto
     const [appointmentData, setAppointmentData] = useState({
         appointmentDate: "",
         service_id: "",
@@ -22,9 +24,12 @@ const NewAppointment = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!auth || !auth.token) {
+            setMessage('User is not authenticated');
+            return;
+        }
         try {
-            const passport = JSON.parse(localStorage.getItem("passport"));
-            const token = passport.token;
+            const token = auth.token;
             const response = await CreateAppointment(token, appointmentData);
             if (response.success) {
                 setMessage(response.message);
