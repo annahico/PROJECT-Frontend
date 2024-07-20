@@ -9,7 +9,7 @@ import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {
-    const { login } = useAuth(); //equivalente en AuthContext
+    const { login } = useAuth();
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({
         email: "",
@@ -22,7 +22,6 @@ export const Login = () => {
     });
 
     const [msgError, setMsgError] = useState("");
-
 
     const inputHandler = (e) => {
         setCredentials((prevState) => ({
@@ -47,19 +46,22 @@ export const Login = () => {
                     throw new Error("All fields must be filled out");
                 }
             }
-    
+
             const fetched = await LoginUser(credentials);
-            console.log(fetched); // Agregar console.log para depuración
-    
-            if (fetched && fetched.user && fetched.user.firstName) {
-                login(fetched.token, fetched.user);
-    
-                setMsgError(`Welcome back, ${fetched.user.firstName}`);
-    
+            console.log("Fetched response:", fetched); // Depuración
+
+            if (fetched && fetched.success && fetched.token) {
+                // Si la API no devuelve un usuario, pero sólo el token, podrías necesitar hacer otra llamada para obtener el usuario
+                const user = {}; // Supón que obtienes el usuario aquí de alguna manera, o desde otra llamada a la API
+                login(fetched.token, user); // Actualiza según sea necesario
+
+                setMsgError(`Login successful`);
+
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
             } else {
+                console.error("Fetched data structure is incorrect:", fetched);
                 throw new Error("Invalid user data received");
             }
         } catch (error) {
@@ -67,7 +69,7 @@ export const Login = () => {
             console.error("Error during login:", error);
         }
     };
-    
+
     return (
         <>
             <Header />
@@ -107,3 +109,4 @@ export const Login = () => {
         </>
     );
 };
+
