@@ -1,25 +1,32 @@
-.global {
-    height: 96vh;
+.registerDesign {
+    height: 90vh;
     width: 100vw;
     display: flex;
-    background-image: url("");
-    background-size: cover;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../../img/fondo.jpg);
 }
 
-.registerDesign {
-    height: 100vh;
-    width: 100vw;
-    background-color: rgb(31, 2, 23);
+.registerContainer {
+    height: 80vh;
+    width: 25vw;
+    margin-top: 3em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url('../../img/fondo.jpg');
+    background-color: black;
+    opacity: 95%;
+    border-radius: 2em;
+    border: solid rgb(139, 0, 76) 0.25em;
+}
+
+.field {
+    color: white;
 }
 
 .errorMsg {
@@ -30,17 +37,22 @@
     height: 3em;
     width: 8em;
     border-radius: 1em;
-    background-color: rgb(4, 56, 134);
+    background-color: black;
     color: white;
     font-weight: bolder;
-
     display: flex;
     justify-content: center;
     align-items: center;
+    border: solid white 0.1em;
 }
 
 .buttonSubmit:hover {
-    transition: 0.4s;
-    background-color: rgb(128, 173, 240);
+    transition: 0.75s;
+    background-color: rgb(139, 0, 76);
     cursor: pointer;
+    box-shadow: 0em 0em 1em rgb(139, 0, 76);
+}
+
+.buttonSubmit:not(:hover) {
+    transition: 0.75s;
 }

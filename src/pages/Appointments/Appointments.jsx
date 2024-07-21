@@ -1,91 +1,66 @@
-import dayjs from 'dayjs';
-import { useEffect, useState } from "react";
-import { ServiceCard } from '../../common/Card/Card';
-import { Header } from "../../common/Header/Header";
-import { useAuth } from '../../context/AuthContext';
-import { DeleteAppointment, GetAppointment } from "../../services/apiCalls";
-import "./Appointments.css";
+import React, { useState } from 'react';
+import './Appointments.css';
+import { useSelector } from "react-redux";
+import { userData } from "../userSlice";
+import { appointments } from '../../services/apiCalls';
 
-export const Appointment = () => {
-    const { userData } = useAuth(); 
-    const [loadedData, setLoadedData] = useState(false);
-    const [appointments, setAppointments] = useState([]);
+export const Appointments = () => {
 
-    useEffect(() => {
-        const getUserAppointment = async () => {
-            if (!userData || !userData.token) {
-                return; 
-            }
-
-            try {
-                const fetched = await GetAppointment(userData.token);
-                if (fetched.data && Array.isArray(fetched.data)) {
-                    const formattedAppointments = fetched.data.map((appointment) => {
-                        return {
-                            ...appointment,
-                            id: appointment.id,
-                        };
-                    });
-                    setAppointments(formattedAppointments);
-                } else {
-                    setAppointments([]);
-                }
-                setLoadedData(true);
-            } catch (error) {
-                console.error("Error fetching appointments:", error);
-                setLoadedData(true); // Actualizamos el estado para evitar bucle infinito
-            }
+        const [appointmentData, setAppointmentData] = useState({
+            tattoo_artist_id: '',
+            date: '',
+            // time: '',
+        });
+    
+        const rdxUserData = useSelector(userData);
+    
+        const handleInputChange = (e) => {
+            const { name, value } = e.target;
+            setAppointmentData({
+                ...appointmentData,
+                [name]: value,
+            });
         };
 
-        if (!loadedData) {
-            getUserAppointment();
-        }
-    }, [userData, loadedData]);
-
-    const deleteAppointment = async (appointmentId) => {
+        
+    const handleCreateAppointment = async () => {
         try {
-            if (!appointmentId) {
-                throw new Error("The appointment ID is invalid");
-            }
-            if (!userData || !userData.token) {
-                throw new Error("User data or token is invalid");
-            }
-            const result = await DeleteAppointment(userData.token, appointmentId);
-            if (result.success) {
-                setLoadedData(false);
-                window.location.reload();
-            } else {
-                throw new Error(result.message || "Error deleting appointment");
-            }
+            const response = await appointments(rdxUserData.credentials.token, appointmentData);
+            console.log(response.data);
         } catch (error) {
-            console.error("Error deleting the appointment:", error);
+            console.error('Error creating the appointment', error.message);
+            console.log(rdxUserData.credentials.token);   
+            console.log(appointmentData);
         }
     };
 
+
     return (
-        <>
-            <Header />
-            <div className="appointmentDesign">
-                <div className="titleDesign">
-                    My Appointments
+        <div className="appointmentsDesign">
+            <div className='containerAppointment'>
+                <div className='title'>ARTIST</div>
+                <div className='inputAppointment'>
+                <input
+                    type='text'
+                    name='tattoo_artist_id'
+                    onChange={handleInputChange}
+                    value={appointmentData.artist}
+                    required
+                ></input>
                 </div>
-                <div className="cardsServiceRoster">
-                    {loadedData && appointments.length > 0 ? (
-                        appointments.map((appointment) => {
-                            return (
-                                <ServiceCard
-                                    key={appointment.id}
-                                    service={<span>Service: {appointment.service.name}</span>}
-                                    appointmentDate={<span>Requested Date: {appointment.appointmentDate ? dayjs(appointment.appointmentDate).format('DD/MM/YYYY HH:mm') : 'Date not available'}</span>}
-                                    onDelete={() => deleteAppointment(appointment.id)}
-                                />
-                            );
-                        })
-                    ) : (
-                        <div>No appointments available</div>
-                    )}
+                <div className='title'>DATE</div>
+                <div className='inputAppointment'>
+                <input
+                    type='datetime-local'
+                    name='date'
+                    onChange={handleInputChange}
+                    value={appointmentData.date}
+                    required
+                ></input>
                 </div>
+                
+                <button onClick={handleCreateAppointment} className='buttonSubmit'>CREATE</button>
             </div>
-        </>
+        </div>
     );
-};
+}

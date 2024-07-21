@@ -1,0 +1,14 @@
+.allCustomersDesign {
+    background-image: url(../../img/fondo.jpg);
+    height: 90vh;
+    width: 100vw;
+    overflow-x: hidden;
+    color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./Login.css";
+import "./WorkerLogin.css";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
 import { validator } from "../../services/useful";
-import { logUser } from "../../services/apiCalls";
+import { logWorker } from "../../services/apiCalls";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { login } from "../userSlice";
 
-export const Login = () => {
+export const LoginWorker = () => {
 
   const navigate = useNavigate();
 
@@ -28,15 +28,16 @@ export const Login = () => {
   };
 
   const errorCheck = () => {
+    console.log("ha ha ha ha");
   }
 
   const logMe = () => {
 
-    logUser(credenciales)
+    logWorker(credenciales)
         .then(
             resultado => {
+                console.log(resultado)
                 dispatch(login({ credentials: resultado.data }))
-                console.log(resultado.data.token);
 
                 setTimeout(()=>{
                     navigate("/");
@@ -74,7 +75,7 @@ export const Login = () => {
         // onBlur={}
       />
       <div className="buttonsLogin">
-      <a href="loginworker"><div className='buttonSubmit'>WORKERS</div></a>
+      <a href="login"><div className='buttonSubmit'>CUSTOMERS</div></a>
        <div className='buttonSubmit' onClick={logMe}>LOG IN</div>
       </div>
       </div>

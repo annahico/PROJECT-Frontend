@@ -1,138 +1,98 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CustomButton } from "../../common/CustomButton/CustomButton";
-import { CustomInput } from "../../common/CustomInput/CustomInput";
-import { Header } from "../../common/Header/Header";
-import { useAuth } from "../../context/AuthContext";
-import { GetProfile, UpdateProfile } from "../../services/apiCalls";
-import { validate } from "../../utils/function";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
+import { CustomInput } from "../../common/CustomInput/CustomInput";
+import { validator } from "../../services/useful";
+
+
+import { useSelector } from "react-redux";
+import { userData } from "../userSlice";
+
 export const Profile = () => {
-    const navigate = useNavigate();
-    const { auth } = useAuth();
+  const datosRdxUser = useSelector(userData);
 
-    const [write, setWrite] = useState("disabled");
-    const [loadedData, setLoadedData] = useState(false);
-    const [user, setUser] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-    });
+  const [profile, setProfile] = useState({
+    name: datosRdxUser.credentials.name,
+    surname: datosRdxUser.credentials.surname,
+    email: datosRdxUser.credentials.email,
+  });
 
-    const [userError, setUserError] = useState({
-        first_nameError: "",
-        last_nameError: "",
-        emailError: "",
-    });
+  const [profileError, setProfileError] = useState({
+    nameError: '',
+    surnameError: '',
+    emailError: '',
+    passwordError: '',
+  });
 
-    const inputHandler = (e) => {
-        setUser((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
+  const [isEnabled, setIsEnabled] = useState(true);
 
-    const checkError = (e) => {
-        const error = validate(e.target.name, e.target.value);
-        setUserError((prevState) => ({
-            ...prevState,
-            [e.target.name + "Error"]: error,
-        }));
-    };
+  useEffect(() => {
 
-    useEffect(() => {
-        if (!auth?.token) {
-            navigate("/");
-        }
-    }, [auth, navigate]);
+  }, [datosRdxUser]);
 
-    useEffect(() => {
-        const getUserProfile = async () => {
-            try {
-                const fetched = await GetProfile(auth.token);
+  const errorCheck = (e) => {
 
-                setLoadedData(true);
+    let error = "";
 
-                setUser({
-                    first_name: fetched.data.firstName,
-                    last_name: fetched.data.secondName,
-                    email: fetched.data.email,
-                });
-            } catch (error) {
-                return error;
-            }
-        };
+    error = validator(e.target.name, e.target.value);
 
-        if (!loadedData) {
-            getUserProfile();
-        }
-    }, [loadedData, auth.token]);
+    setProfileError((prevState) => ({
+        ...prevState,
+        [e.target.name + 'Error']: error,
+    }));
+  }
 
-    const updateData = async () => {
-        try {
-            const fetched = await UpdateProfile(auth.token, user);
+  const functionHandler = (e) => {
+    setProfile((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  }
 
-            setUser((prevState) => ({
-                ...prevState,
-                first_name: fetched.data.firstName || prevState.first_name,
-                last_name: fetched.data.secondName || prevState.last_name,
-                email: fetched.data.email || prevState.email,
-            }));
-
-            setWrite("disabled");
-        } catch (error) {
-            return error;
-        }
-    };
-
-    return (
-        <>
-            <Header />
-            <div className="profileDesign">
-                {!loadedData ? (
-                    <div>Loading</div>
-                ) : (
-                    <div className="profileDesign">
-                        <div className="titleDesign">Welcome to Your Profile</div>
-                        <CustomInput
-                            className={`inputDesign ${userError.first_nameError !== "" ? "inputDesignError" : ""}`}
-                            type={"text"}
-                            placeholder={""}
-                            name={"first_name"}
-                            disabled={write}
-                            value={user.first_name || ""}
-                            onChangeFunction={(e) => inputHandler(e)}
-                            onBlurFunction={(e) => checkError(e)}
-                        />
-                        <CustomInput
-                            className={`inputDesign ${userError.last_nameError !== "" ? "inputDesignError" : ""}`}
-                            type={"text"}
-                            placeholder={""}
-                            name={"last_name"}
-                            disabled={"disabled"}
-                            value={user.last_name || ""}
-                            onChangeFunction={(e) => inputHandler(e)}
-                            onBlurFunction={(e) => checkError(e)}
-                        />
-                        <CustomInput
-                            className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""}`}
-                            type={"email"}
-                            placeholder={""}
-                            name={"email"}
-                            disabled={"disabled"}
-                            value={user.email || ""}
-                            onChangeFunction={(e) => inputHandler(e)}
-                            onBlurFunction={(e) => checkError(e)}
-                        />
-                        <CustomButton
-                            className={"buttonDesign"}
-                            title={write === "" ? "Confirm" : "Edit"}
-                            functionEmit={write === "" ? updateData : () => setWrite("")}
-                        />
-                    </div>
-                )}
-            </div>
-        </>
-    );
+  return (
+    <div className="profileDesign">
+      <div className="containerProfile">
+        NAME:
+      <CustomInput
+        disabled={isEnabled}
+        design={`inputDesign ${
+          profileError.firstNameError !== "" ? "inputDesignError" : ""
+        }`}
+        type={"text"}
+        name={"name"}
+        placeholder={""}
+        value={profile.name}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      SURNAME:
+      <CustomInput
+        disabled={isEnabled}
+        design={`inputDesign ${
+          profileError.lastNameError !== "" ? "inputDesignError" : ""
+        }`}
+        type={"text"}
+        name={"surname"}
+        placeholder={""}
+        value={profile.surname}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      EMAIL:
+      <CustomInput
+        disabled={isEnabled}
+        design={`inputDesign ${
+          profileError.emailError !== "" ? "inputDesignError" : ""
+        }`}
+        type={"email"}
+        name={"email"}
+        placeholder={""}
+        value={profile.email}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+        <a href="mydates"><div className="editDesign">MY DATES</div></a>
+      </div>
+    </div>
+  );
 };

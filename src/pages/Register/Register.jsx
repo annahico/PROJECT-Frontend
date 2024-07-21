@@ -1,126 +1,126 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CustomButton } from "../../common/CustomButton/CustomButton";
-import { CustomInput } from "../../common/CustomInput/CustomInput";
-import { Header } from "../../common/Header/Header";
-import { useAuth } from '../../context/AuthContext'; // Importar el contexto
-import { validate } from "../../utils/function";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
+import { CustomInput } from "../../common/CustomInput/CustomInput";
+import { validator } from "../../services/useful";
+import { registerUser } from "../../services/apiCalls";
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
-    const navigate = useNavigate();
-    const { register } = useAuth(); // Obtener el método register del contexto
 
-    const [user, setUser] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-    });
+  const navigate = useNavigate();
 
-    const [userError, setUserError] = useState({
-        firstNameError: "",
-        lastNameError: "",
-        emailError: "",
-        passwordError: "",
-    });
+  const [user, setUser] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    password: ''
+  })
 
-    const [msgError, setMsgError] = useState("");
+  const [userError, setUserError] = useState({
+    nameError: '',
+    surnameError: '',
+    emailError: '',
+    passwordError: ''
+  })
 
-    const inputHandler = (e) => {
-        setUser((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
 
-    const checkError = (e) => {
-        const fieldName = e.target.name;
-        const fieldValue = e.target.value;
-        const error = validate(fieldName, fieldValue);
+  const functionHandler = (e) => {
+    setUser((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-        setUserError((prevState) => ({
-            ...prevState,
-            [`${fieldName}Error`]: error,
-        }));
-    };
+  const errorCheck = (e) => {
 
-    const registerMe = async () => {
-        try {
-            for (let element in user) {
-                if (user[element] === "") {
-                    throw new Error("All fields must be filled");
-                }
-            }
+    let error = "";
 
-            const fetched = await register(user); // Usar el método register del contexto
-            setMsgError(fetched.message);
-            if (fetched.success) {
-                setTimeout(() => {
-                    navigate("/");
-                }, 1200);
-            }
-        } catch (error) {
-            setMsgError(error.message);
+    error = validator(e.target.name, e.target.value);
+
+    setUserError((prevState) => ({
+        ...prevState,
+        [e.target.name + 'Error']: error,
+    }));
+  }
+
+  const Submit = () => {
+
+    for(let test1 in user){
+      if(user[test1] === ""){
+
+        return;
+      }
+
+    }
+
+    for(let test in userError){
+      if(userError[test] !== ""){
+        return;
+      }
+    }
+
+    registerUser(user)
+      .then(
+        resultado => {
+          //si todo ha ido bien, redirigiremos a login...
+
+          setTimeout(()=>{
+            navigate("/login");
+          },500)
         }
-    };
+      )
+      .catch(error=> console.log(error));
+  }
 
-    return (
-        <>
-            <Header />
-            <div className="registerDesign">
-                <div className="titleDesign">Register</div>
-                <CustomInput
-                    className={`inputDesign ${userError.firstNameError ? "inputDesignError" : ""}`}
-                    type={"text"}
-                    placeholder={"First_name"}
-                    name={"first_name"}
-                    value={user.first_name || ""}
-                    onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
-                />
-                <div className="error">{userError.firstNameError}</div>
-
-                <CustomInput
-                    className={`inputDesign ${userError.lastNameError ? "inputDesignError" : ""}`}
-                    type={"text"}
-                    placeholder={"Last_name"}
-                    name={"last_name"}
-                    value={user.last_name || ""}
-                    onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
-                />
-                <div className="error">{userError.lastNameError}</div>
-
-                <CustomInput
-                    className={`inputDesign ${userError.emailError ? "inputDesignError" : ""}`}
-                    type={"email"}
-                    placeholder={"Email"}
-                    name={"email"}
-                    value={user.email || ""}
-                    onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
-                />
-                <div className="error">{userError.emailError}</div>
-
-                <CustomInput
-                    className={`inputDesign ${userError.passwordError ? "inputDesignError" : ""}`}
-                    type={"password"}
-                    placeholder={"Password"}
-                    name={"password"}
-                    value={user.password || ""}
-                    onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
-                />
-                <div className="error">{userError.passwordError}</div>
-
-                <CustomButton
-                    className={"buttonDesign"}
-                    title={"Register"}
-                    functionEmit={registerMe}
-                />
-                <div className="error">{msgError}</div>
-            </div>
-        </>
-    );
+  return (
+    <div className="registerDesign">
+      <div className="registerContainer">
+      <div className='field'>NAME</div>
+        <CustomInput
+        design={`inputDesign ${userError.nameError !== "" ? 'inputDesignError' : ''}`}
+        type={"text"}
+        name={"name"}
+        placeholder={""}
+        // value={}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      <div className='errorMsg'>{userError.nameError}</div>
+      <div className='field'>SURNAME</div>
+      <CustomInput
+        design={`inputDesign ${userError.surnameError !== "" ? 'inputDesignError' : ''}`}
+        type={"text"}
+        name={"surname"}
+        placeholder={""}
+        // value={}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      <div className='errorMsg'>{userError.surnameError}</div>
+      <div className='field'>EMAIL</div>
+      <CustomInput
+        design={`inputDesign ${userError.emailError !== "" ? 'inputDesignError' : ''}`}
+        type={"email"}
+        name={"email"}
+        placeholder={""}
+        // value={}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      <div className='errorMsg'>{userError.emailError}</div>
+      <div className='field'>PASSWORD</div>
+      <CustomInput
+        design={`inputDesign ${userError.passwordError !== "" ? 'inputDesignError' : ''}`}
+        type={"password"}
+        name={"password"}
+        placeholder={""}
+        // value={}
+        functionProp={functionHandler}
+        functionBlur={errorCheck}
+      />
+      <div className='errorMsg'>{userError.passwordError}</div>
+      <div className='buttonSubmit' onClick={Submit}>REGISTER</div>
+      </div>
+    </div>
+  );
 };

@@ -1,17 +1,32 @@
 .inputDesign {
-    height: 3em;
-    width: 18em;
-    border: 0.2em solid rgb(29, 28, 28);
+    height: 2em;
+    width: 15em;
     border-radius: 0.5em;
-    margin: 1em;
-    background-color: rgb(260, 260, 260);
-    color: black;
+    border: 0.1em solid rgb(139, 0, 76);
+    margin-bottom: 2.5em;
+    margin-top: 0.2em;
+}
+
+.inputDesign:hover {
+    transition: 0.75s;
+    box-shadow: 0em 0em 1em rgb(255, 0, 128);
+}
+
+.inputDesign:not(:hover) {
+    transition: 0.75s;
 }
 
 .inputDesign:focus {
-    outline: none;
+    transition: 1s;
+    box-shadow: 0em 0em 2em rgb(255, 0, 128);
+}
+
+.inputDesign:not(:focus) {
+    transition: 2s;
 }
 
 .inputDesignError {
-    border: 0.2em solid rgb(168, 12, 77);
+
+    border: 0.2em red solid;
+
 }

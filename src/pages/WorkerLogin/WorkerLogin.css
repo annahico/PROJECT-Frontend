@@ -1,7 +1,8 @@
-.appointmentsDesign {
-    height: 100vh;
+.loginDesign {
+    height: 90vh;
     width: 100vw;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-image: url(../../img/fondo.jpg);
@@ -10,11 +11,12 @@
     background-size: cover;
 }
 
-.containerAppointment {
-    height: 20em;
-    width: 20em;
-    flex-direction: column;
+.containerLogin {
+    height: 40vh;
+    width: 25vw;
+    margin-top: 3em;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: black;
@@ -23,15 +25,14 @@
     border: solid rgb(139, 0, 76) 0.25em;
 }
 
-.title {
-    margin-bottom: 0.25em;
-    color: whitesmoke;
+.buttonsLogin {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 20vw;
 }
 
-.inputAppointment {
-    margin-bottom: 2em;
-}
-
-.buttonAppointments {
-    color: rgb(255, 0, 128);
+a {
+    color: white;
+    text-decoration: none;
 }

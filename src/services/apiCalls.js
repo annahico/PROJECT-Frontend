@@ -1,228 +1,65 @@
-const root = "http://localhost:4000/api/";
 
-export const RegisterUser = async (user) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-    };
-    try {
-        const response = await fetch(`${root}auth/register`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data;
-    } catch (error) {
-        return error;
-    }
-};
+import axios from 'axios';
 
-export const LoginUser = async (credenciales) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credenciales)
-    };
-    try {
-        const response = await fetch(`${root}auth/login`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data;
-    } catch (error) {
-        return error;
-    }
-};
+export const logUser = async (body) => {
 
-export const GetProfile = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        }
-    };
-    try {
-        const response = await fetch(`${root}users/profile`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data;
-    } catch (error) {
-        return error;
-    }
-};
+    return await axios.post(`http://localhost:4000/customer/login`, body);
+}
 
-export const UpdateProfile = async (token, data) => {
-    const options = {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-    };
+export const logWorker = async (body) => {
 
-    try {
-        const response = await fetch(`${root}users/profile`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data;
-    } catch (error) {
-        return error;
-    }
-};
+    return await axios.post(`http://localhost:4000/tattoo_artist/login`, body);
+}
 
-export const GetServices = async () => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    };
-    try {
-        const response = await fetch(`${root}services`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        const servicesData = data.data;
-        return servicesData;
-    } catch (error) {
-        return error;
-    }
-};
+export const registerUser = async (body) => {
 
-export const GetAppointment = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-    };
-    try {
-        const response = await fetch(`${root}appointments`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        return data;
-    } catch (error) {
-        return error;
-    }
-};
+    return await axios.post(`http://localhost:4000/customer/register`, body);
+}
 
-export const DeleteAppointment = async (token, data) => {
-    const options = {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ "id": data })
-    };
-    try {
-        const response = await fetch(`${root}appointments`, options);
-        const responseData = await response.json();
-        if (!responseData.success) {
-            throw new Error(responseData.message);
-        }
-        return responseData;
-    } catch (error) {
-        return error;
-    }
-};
+export const bringTattoo = async () => {
 
-export const GetUsers = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-    };
-    try {
-        const response = await fetch(`${root}users`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        const servicesData = data.data;
-        return servicesData;
-    } catch (error) {
-        throw new Error(error);
-    }
-};
+    return await axios.get(`http://localhost:4000/gallery/all`);
+}
 
-export const DeleteUser = async (token, data) => {
-    const options = {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-    };
-    try {
-        const response = await fetch(`${root}users/${data.id}`, options);
-        const responseData = await response.json();
-        if (!responseData.success) {
-            throw new Error(responseData.message);
-        }
-        return responseData;
-    } catch (error) {
-        return { success: false, message: error.message };
-    }
-};
+export const bringProfile = async () => {
 
-export const CreateAppointment = async (token, data) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(data)
-    };
-    try {
-        const response = await fetch(`${root}appointments`, options);
-        const responseData = await response.json();
-        if (!responseData.success) {
-            throw new Error(responseData.message);
-        }
-        return responseData;
-    } catch (error) {
-        return { success: false, message: error.message };
-    }
-};
+    return await axios.get(`https://localhost:4000/customer/profile`);
+}
 
-// Nueva función para obtener todas las citas
-export const GetAllAppointments = async (token) => {
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-    };
-    try {
-        const response = await fetch(`${root}appointments/all`, options);
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
+export const bringArtistProfile = async () => {
+
+    return await axios.get(`https://localhost:4000/tattoo_artist/profile`);
+}
+
+export const myDates = async (credentials) => {
+    console.log("token", credentials);
+    return await axios.get('http://localhost:4000/customer/appointment/', {
+        headers: { Authorization: `Bearer ${credentials}` }
+    })
+}
+
+export const deleteMyDates = async (credentials) => {
+    return await axios.delete('http://localhost:4000/appoiments/delete', {
+        headers: { Authorization: `Bearer ${credentials}` }
+    })
+}
+
+export const getAllCustomers = async (credentials) => {
+    return await axios.get('http://localhost:4000/tattoo_artist/customers', {
+        headers: { Authorization: `Bearer ${credentials}` }
+    })
+}
+
+export const getAllAppointments = async (credentials) => {
+    return await axios.get('http://localhost:4000/tattoo_artist/appointment', {
+        headers: { Authorization: `Bearer ${credentials}` }
+    })
+}
+
+export const appointments = async (token, appointmentData) => {
+    return await axios.post("http://localhost:4000/appoiments/create", appointmentData,
+        {
+            headers: { Authorization: `Bearer ${token}` },
         }
-        return data.data;
-    } catch (error) {
-        return { success: false, message: error.message };
-    }
+    );
 };

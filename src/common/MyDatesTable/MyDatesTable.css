@@ -1,0 +1,41 @@
+table {
+    width: 50em;
+    background-color: black;
+    opacity: 95%;
+    border: solid rgb(139, 0, 76) 0.25em;
+}
+
+th {
+    padding-right: 2em;
+    text-decoration: underline;
+}
+
+td {
+    padding-right: 2em;
+    padding-bottom: 1em;
+}
+
+.delete {
+    height: 1.5em;
+    width: 4em;
+    border-radius: 1em;
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid white 0.1em;
+}
+
+.delete:hover {
+    transition: 0.75s;
+    background-color: rgb(139, 0, 76);
+    cursor: pointer;
+    box-shadow: 0em 0em 1em rgb(139, 0, 76);
+
+}
+
+.delete:not(:hover) {
+    transition: 0.75s;
+}
