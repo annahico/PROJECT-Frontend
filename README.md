@@ -1,6 +1,6 @@
 <h1 align="center"> PROJECT FRONTEND: TATTOO STUDIO </h1>
 
-<image src="" alt="Tattoo Studio">
+<img src="https://slm-assets.secondlife.com/assets/25494302/original/BareFlamboyantAngwantibo-size_restricted.gif?1579883171" width="1000"  alt="Tattoo Studio"/>
 
 ---
 
