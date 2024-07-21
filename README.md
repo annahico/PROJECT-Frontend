@@ -9,8 +9,9 @@
 1. [Description :classical_building:](#description-classical_building)
 2. [Stack :gear:](#stack-gear)
 3. [Project :open_book:](#Project-open_book)
-4. [Link :dart:](#link-dart)
-5. [Developer :wave:](#developer-wave)
+4. [Contributions ](#Contributions)
+5. [Link :dart:](#link-dart)
+6. [Developer :wave:](#developer-wave)
 
 ---
 
@@ -61,90 +62,14 @@ I recently completed a frontend project for a potential tattoo and piercing shop
   `npm run dev`.
 - Access localhost from the console view.
 
-### 2 - Info to log
+## Contributions :
 
-- Admin:
+This project is public, and contributions are welcome. If you want to contribute, follow these steps:
 
-```
-<!-- _id: "1",
-name: "Admin",
-email: "admin@example.com",
-password: 123456,
-role: "admin" -->
-```
-
-- Manager:
-
-```
-<!-- _id: "2",
-name: "Manager",
-email: "'manager@example.com'",
-password: 123456,
-role: "manager" -->
-```
-
-- Tattoo Artist:
-
-```
-<!-- _id: "3",
-name: "'Tattoo Artist'",
-email: "'tatto-artist@example.com'",
-password: 123456,
-role: "tatto-artist" -->
-```
-
-- Customer:
-
-```
-<!-- _id: "4",
-name: "'user1'",
-email: "'user@example.com'",
-password: 123456,
-role: "user" -->
-```
-
-### 2 - Roots:
-
-1. Home:
-
-<image src="" alt="Home">
-
-2. Sevices:
-
-<image src="" alt="Services">
-
-3. Profile
-
-<image src="" alt="Profile">
-
-4. Appointments:
-
-<image src="" alt="Appointments">
-
-5. New Appointment
-
-### Bugs :collision:
-
-- There is no time restriction: past days and nighttime hours can be selected.
-- Services are chosen by ID, not by name. The order is as follows:
-
-<image src="" alt="New Appointment">
-
-6. User(only admin):
-
-<image src="" alt="Users">
-
-7. Log:
-
-<image src="" alt="Log">
-
-8. Register:
-
-<image src="" alt="Register">
-
----
-
----
+Fork the repository.
+Create a new branch for your contribution.
+Make your changes and improvements.
+Submit a pull request for review and merging.
 
 ## Link :dart:
 
