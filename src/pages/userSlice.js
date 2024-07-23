@@ -6,25 +6,28 @@ export const userSlice = createSlice({
     credentials: {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      token: "" // Añadido token para manejar la autenticación
     }
   },
-    reducers: {
-      login: (state, action) => {
-        return {
-          ...state,
-          ...action.payload
-        }
-      },
-      logout: (state, action) => {
-        return {
-          ...state,
-          ...action.payload
-        }
-      }
-      
+  reducers: {
+    login: (state, action) => {
+      // Actualiza solo las credenciales con los datos del payload
+      state.credentials = {
+        ...state.credentials,
+        ...action.payload
+      };
+    },
+    logout: (state) => {
+      // Restablece el estado a los valores iniciales
+      state.credentials = {
+        name: "",
+        email: "",
+        password: "",
+        token: ""
+      };
     }
-    
+  }
 });
 
 export const { login, logout } = userSlice.actions;

@@ -1,25 +1,25 @@
-import React from 'react'
-import './HoursAddress.css'
-import { LinkButton } from '../LinkButton/LinkButton'
+import React from 'react';
+import './HoursAddress.css';
 
-    <HoursAddressCard title="title" text="text" subtext="subtext"/>
-
-    export default function HoursAddressCard({title, text, subtext}) {
-     return (
-         <div className='HoursAddressCardDesign'>
-            <div className='HoursAddressTitle'>
-                {title}
-            </div>
-        <div className='HoursAddressText'>
-            <p>
-                {text}
-            </p>
-        </div>
-        <div className='HoursAddressSubtext'>
-            <p>
-                {subtext}
-            </p>
-        </div>
-            </div>
-     )
+export default function HoursAddressCard({ title, text, subtext }) {
+  return (
+    <div className='HoursAddressCardDesign'>
+      <div className='HoursAddressTitle'>
+        {title}
+      </div>
+      <div className='HoursAddressText'>
+        <p>
+          {text}
+        </p>
+      </div>
+      <div className='HoursAddressSubtext'>
+        <p>
+          {subtext}
+        </p>
+      </div>
+    </div>
+  );
 }
+
+// Example usage:
+// <HoursAddressCard title="title" text="text" subtext="subtext" />

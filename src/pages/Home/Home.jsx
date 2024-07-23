@@ -9,7 +9,7 @@ export const Home = () => {
                     <HoursAddressCard title="HOURS" text="MON-FRI" subtext="9:00-:14:00" />
                 </div>
                 <div className='HADivider'>
-                    <HoursAddressCard title="ADDRESS" text="LONDON" subtext="Leadenhall Market" />
+                    <HoursAddressCard title="ADDRESS" text="LONDON" subtext="Camdem Town" />
                 </div>
             </div>
             <div className='RightHome'>

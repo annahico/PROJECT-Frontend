@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getAllAppointments } from "../../services/apiCalls";
 import { useNavigate } from "react-router-dom";
-import { userData } from "../userSlice";
 import { PrintAppointments } from "../../common/AllAppointmentsTable/AllAppointmentsTable";
+import { getAllAppointments } from "../../services/apiCalls";
+import { userData } from "../userSlice";
 import "./AllAppointments.css";
 
 
