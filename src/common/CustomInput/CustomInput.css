@@ -1,32 +1,17 @@
 .inputDesign {
-    height: 2em;
-    width: 15em;
+    height: 3em;
+    width: 18em;
+    border: 0.2em solid rgb(29, 28, 28);
     border-radius: 0.5em;
-    border: 0.1em solid rgb(139, 0, 76);
-    margin-bottom: 2.5em;
-    margin-top: 0.2em;
-}
-
-.inputDesign:hover {
-    transition: 0.75s;
-    box-shadow: 0em 0em 1em rgb(255, 0, 128);
-}
-
-.inputDesign:not(:hover) {
-    transition: 0.75s;
+    margin: 1em;
+    background-color: rgb(260, 260, 260);
+    color: black;
 }
 
 .inputDesign:focus {
-    transition: 1s;
-    box-shadow: 0em 0em 2em rgb(255, 0, 128);
-}
-
-.inputDesign:not(:focus) {
-    transition: 2s;
+    outline: none;
 }
 
 .inputDesignError {
-
-    border: 0.2em red solid;
-
+    border: 0.2em solid rgb(168, 12, 77);
 }

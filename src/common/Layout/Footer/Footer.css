@@ -1,0 +1,29 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-top: 1px solid;
+    border-color: #e0e0e0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+}
+
+.separator {
+    margin: 0 4px;
+    opacity: 0.5;
+}
+
+.footer-social {
+    display: flex;
+    gap: 8px;
+}

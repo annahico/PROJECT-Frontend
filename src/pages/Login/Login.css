@@ -1,33 +1,19 @@
 .loginDesign {
-    height: 90vh;
+    height: 100vh;
     width: 100vw;
+    background-color: rgb(31, 2, 23);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    background-image: url(../../img/fondo.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('../../img/fondo.jpg');
+
 }
 
-.containerLogin {
-    height: 40vh;
-    width: 25vw;
-    margin-top: 3em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    opacity: 95%;
-    border-radius: 2em;
-    border: solid rgb(139, 0, 76) 0.25em;
-}
-
-.buttonsLogin {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 20vw;
+.error {
+    height: 1em;
+    color: red;
 }

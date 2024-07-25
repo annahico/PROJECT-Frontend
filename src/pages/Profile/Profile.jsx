@@ -1,97 +1,175 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { CustomInput } from "../../common/CustomInput/CustomInput";
-import { validator } from "../../services/useful";
-import { userData } from "../userSlice";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Avatar, Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+// import { apiUsers } from "../services/index";
 import "./Profile.css";
 
 export const Profile = () => {
-  const datosRdxUser = useSelector(userData);
+    const { userData } = useAuth();
+    const navigate = useNavigate();
+    const [data, setData] = useState({
+        first_name: '',
+        last_name: '',
+        email: ''
+    });
+    const [token, setToken] = useState('');
+    const [errores, setErrores] = useState({});
+    const [load, setLoad] = useState(false);
 
-  const [profile, setProfile] = useState({
-    name: datosRdxUser.credentials.name || "",
-    surname: datosRdxUser.credentials.surname || "",
-    email: datosRdxUser.credentials.email || "",
-  });
+    useEffect(() => {
+        if (!userData) {
+            navigate("/login");
+            return;
+        }
 
-  const [profileError, setProfileError] = useState({
-    nameError: '',
-    surnameError: '',
-    emailError: '',
-  });
+        const token = userData.token;
+        setToken(token);
 
-  const [isEnabled, setIsEnabled] = useState(true);
+        const loadProfile = async () => {
+            try {
+                const resp = await apiUsers.user.getProfile(token);
+                const { first_name, last_name, email } = resp.data;
+                setData({ first_name, last_name, email });
+            } catch (error) {
+                messageBasic("error", "Error cargando profile: " + error);
+            }
+        };
 
-  const errorCheck = (e) => {
-    const { name, value } = e.target;
-    const error = validator(name, value);
+        loadProfile();
+    }, [userData, navigate]);
 
-    setProfileError((prevState) => ({
-      ...prevState,
-      [`${name}Error`]: error,
-    }));
-  }
+    const inputHandler = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        });
+        setErrores({
+            ...errores,
+            [e.target.name]: ''
+        });
+    }
 
-  const functionHandler = (e) => {
-    const { name, value } = e.target;
-    setProfile((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }
+    const validateField = (fieldName, value) => {
+        if (!value) {
+            return "This field is required";
+        }
+        return "";
+    }
 
-  return (
-    <div className="profileDesign">
-      <div className="containerProfile">
-        <div>
-          NAME:
-          <CustomInput
-            disabled={isEnabled}
-            design={`inputDesign ${
-              profileError.nameError ? "inputDesignError" : ""
-            }`}
-            type="text"
-            name="name"
-            placeholder=""
-            value={profile.name}
-            functionProp={functionHandler}
-            functionBlur={errorCheck}
-          />
+    const validateData = () => {
+        const newErrors = {};
+        let isValid = true;
+
+        Object.keys(data).forEach((key) => {
+            const error = validateField(key, data[key]);
+            if (error) {
+                isValid = false;
+                newErrors[key] = error;
+            }
+        });
+
+        if (!isValid) {
+            setErrores(newErrors);
+            return;
+        }
+
+        sendData(data);
+    };
+
+    const sendData = async () => {
+        const resp = await apiUsers.user.updateProfile(token, data);
+        if (resp.success) {
+            messageBasic(
+                "success",
+                resp.message,
+                "center",
+                false,
+                1600
+            );
+            setLoad(!load);
+        }
+    }
+
+    const hasError = (valor) => {
+        return !!valor;
+    }
+
+    return (
+        <div className="profileDesign">
+            <Paper className="profileContainer">
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <AccountCircleIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Profile
+                    </Typography>
+                    <Box noValidate sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="given-name"
+                                    name="first_name"
+                                    required
+                                    fullWidth
+                                    id="first_name"
+                                    label="First Name"
+                                    value={data.first_name}
+                                    onChange={inputHandler}
+                                    error={hasError(errores.first_name)}
+                                    helperText={errores.first_name}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="last_name"
+                                    label="Last Name"
+                                    name="last_name"
+                                    autoComplete="family-name"
+                                    value={data.last_name}
+                                    onChange={inputHandler}
+                                    error={hasError(errores.last_name)}
+                                    helperText={errores.last_name}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    value={data.email}
+                                    onChange={inputHandler}
+                                    error={hasError(errores.email)}
+                                    helperText={errores.email}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            onClick={validateData}
+                        >
+                            Update Profile
+                        </Button>
+                    </Box>
+                </Box>
+            </Paper>
         </div>
-        <div>
-          SURNAME:
-          <CustomInput
-            disabled={isEnabled}
-            design={`inputDesign ${
-              profileError.surnameError ? "inputDesignError" : ""
-            }`}
-            type="text"
-            name="surname"
-            placeholder=""
-            value={profile.surname}
-            functionProp={functionHandler}
-            functionBlur={errorCheck}
-          />
-        </div>
-        <div>
-          EMAIL:
-          <CustomInput
-            disabled={isEnabled}
-            design={`inputDesign ${
-              profileError.emailError ? "inputDesignError" : ""
-            }`}
-            type="email"
-            name="email"
-            placeholder=""
-            value={profile.email}
-            functionProp={functionHandler}
-            functionBlur={errorCheck}
-          />
-        </div>
-        <a href="mydates">
-          <div className="editDesign">MY DATES</div>
-        </a>
-      </div>
-    </div>
-  );
+    );
 };

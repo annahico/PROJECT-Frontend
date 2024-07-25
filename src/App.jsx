@@ -1,18 +1,7 @@
-
-import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Body } from './pages/Body/Body'
-import { Navbar } from './common/navbar/navbar'
-
+import AppRoutes from "./routes";
 
 function App() {
-
-  return (
-    <>
-      <Navbar />
-      <Body />
-    </>
-  )
+   return <AppRoutes />;
 }
 
-export default App
+export default App;

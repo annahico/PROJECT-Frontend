@@ -1,90 +1,101 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { CustomButton } from "../../common/CustomButton/CustomButton";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
-import { logUser } from "../../services/apiCalls";
-import { login } from "../userSlice";
+import { Header } from "../../common/Layout/Header/Header";
+import { useAuth } from "../../context/AuthContext";
+import { LoginUser } from "../../services/index";
+import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({
+        email: "",
+        password: ""
+    });
+    const [credentialsError, setCredentialsError] = useState({
+        emailError: "",
+        passwordError: "",
+    });
+    const [msgError, setMsgError] = useState("");
 
-  const [credenciales, setCredenciales] = useState({
-    email: "",
-    password: "",
-  });
+    const inputHandler = (e) => {
+        setCredentials((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    };
 
-  const [msgError, setMsgError] = useState('');
+    const checkError = (e) => {
+        const error = validate(e.target.name, e.target.value);
+        setCredentialsError((prevState) => ({
+            ...prevState,
+            [e.target.name + "Error"]: error
+        }));
+    };
 
-  const functionHandler = (e) => {
-    const { name, value } = e.target;
-    setCredenciales((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+    const loginMe = async () => {
+        try {
+            for (let element in credentials) {
+                if (credentials[element] === "") {
+                    throw new Error("All fields must be filled out");
+                }
+            }
+            const fetched = await LoginUser(credentials);
+            console.log(fetched); 
+            if (fetched && fetched.user && fetched.user.firstName) {
+                login(fetched.token, fetched.user);
+                setMsgError(`Welcome back, ${fetched.user.firstName}`);
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
+            } else {
+                throw new Error("Invalid user data received");
+            }
+        } catch (error) {
+            setMsgError(error.message);
+            console.error("Error during login:", error);
+        }
+    };
 
-  const errorCheck = () => {
-    // Implement validation logic if needed
-    // Return an error message if validation fails
-    // Example:
-    if (!credenciales.email || !credenciales.password) {
-      return "Email and password are required.";
-    }
-    return "";
-  };
-
-  const logMe = async () => {
-    const errorMessage = errorCheck();
-    if (errorMessage) {
-      setMsgError(errorMessage);
-      return;
-    }
-
-    try {
-      const resultado = await logUser(credenciales);
-      dispatch(login({ credentials: resultado.data }));
-      console.log(resultado.data.token);
-
-      setTimeout(() => {
-        navigate("/");
-      }, 500);
-    } catch (error) {
-      console.log(error);
-      setMsgError(error.message || 'An error occurred during login.');
-    }
-  };
-
-  return (
-    <div className="loginDesign">
-      <div className="containerLogin">
-        <div className='field'>EMAIL</div>
-        <CustomInput
-          design={"inputDesign"}
-          type={"email"}
-          name={"email"}
-          placeholder={"Enter your email"}
-          value={credenciales.email}
-          functionProp={functionHandler}
-          // Implement onBlur if needed
-        />
-        <div className='field'>PASSWORD</div>
-        <CustomInput
-          design={"inputDesign"}
-          type={"password"}
-          name={"password"}
-          placeholder={"Enter your password"}
-          value={credenciales.password}
-          functionProp={functionHandler}
-          // Implement onBlur if needed
-        />
-        {msgError && <div className="error">{msgError}</div>}
-        <div className="buttonsLogin">
-          <a href="loginworker"><div className='buttonSubmit'>WORKERS</div></a>
-          <div className='buttonSubmit' onClick={logMe}>LOG IN</div>
-        </div>
-      </div>
-    </div>
-  );
+    return (
+        <>
+            <Header />
+            <div className="loginDesign">
+                <div className="titleDesign">
+                    User Login
+                </div>
+                <CustomInput
+                    className={`inputDesign ${credentialsError.emailError !== "" ? "inputDesignError" : ""}`}
+                    type={"email"}
+                    placeholder={"Email"}
+                    name={"email"}
+                    disabled={""}
+                    value={credentials.email || ""}
+                    onChangeFunction={(e) => inputHandler(e)}
+                    onBlurFunction={(e) => checkError(e)}
+                />
+                <div className="error">{credentialsError.emailError}</div>
+                <CustomInput
+                    className={`inputDesign ${credentialsError.passwordError !== "" ? "inputDesignError" : ""}`}
+                    type={"password"}
+                    placeholder={"Password"}
+                    name="password"
+                    disabled={""}
+                    value={credentials.password || ""}
+                    onChangeFunction={(e) => inputHandler(e)}
+                    onBlurFunction={(e) => checkError(e)}
+                />
+                <div className="error">{credentialsError.passwordError}</div>
+                <CustomButton
+                    className={"buttonDesign"}
+                    title={"Login"}
+                    functionEmit={loginMe}
+                />
+                <div className="error">{msgError}</div>
+            </div>
+        </>
+    );
 };

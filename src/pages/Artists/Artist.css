@@ -1,0 +1,30 @@
+.artists-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.artists-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+}
+
+.artists-title {
+    margin-bottom: 24px;
+    font-weight: bold;
+    color: #333;
+    font-size: 2rem;
+}
+
+.artists-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.artist-card {
+    margin: 16px;
+}
