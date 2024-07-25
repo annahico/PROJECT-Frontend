@@ -1,21 +1,113 @@
-import { apiRequest } from "../utils/Helper";
+const BASE_URL = "http://localhost:4000/api/";
 
-const BASE_URL = "users";
+export const getProfile = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-const handleApiRequest = (endpoint, method, token = null, payload = null) => {
-    return apiRequest(endpoint, method, token, payload);
+    try {
+        const response = await fetch(`${BASE_URL}users/profile`, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error retrieving profile:", error);
+        throw error; // Rethrow to allow calling functions to handle the error
+    }
 };
 
-const userApi = {
-    getArtists: () => handleApiRequest(`${BASE_URL}/tattoo_artist`, 'GET'),
+export const getAllUsers = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-    getProfile: (token) => handleApiRequest(`${BASE_URL}/profile`, 'GET', token),
-
-    updateProfile: (token, payload) => handleApiRequest(`${BASE_URL}/profile`, 'PUT', token, payload),
-
-    userAll: (token) => handleApiRequest(BASE_URL, 'GET', token),
-
-    deleteUser: (token, id) => handleApiRequest(`${BASE_URL}/${id}`, 'DELETE', token),
+    try {
+        const response = await fetch(`${BASE_URL}users`, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error retrieving users:", error);
+        throw error; // Rethrow to allow calling functions to handle the error
+    }
 };
 
-export default userApi;
+export const updateProfile = async (data, token) => {
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}users/profile`, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        return { success: false, message: error.message };
+    }
+};
+
+export const updateUserById = async (data, token) => {
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}users/${data.id}`, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error("Error updating user by ID:", error);
+        return { success: false, message: error.message };
+    }
+};
+
+export const deleteUserById = async (id, token) => {
+    const options = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}users/${id}`, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error("Error deleting user by ID:", error);
+        return { success: false, message: error.message };
+    }
+};

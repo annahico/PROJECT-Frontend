@@ -2,10 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../common/CustomButton/CustomButton";
 import { CustomInput } from "../../common/CustomInput/CustomInput";
-import { Header } from "../../common/Layout/Header/Header";
+import { Header } from "../../common/Header/Header";
 import { useAuth } from "../../context/AuthContext";
-import { LoginUser } from "../../services/index";
-import { validate } from "../../utils/function";
 import "./Login.css";
 
 export const Login = () => {
@@ -14,10 +12,6 @@ export const Login = () => {
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
-    });
-    const [credentialsError, setCredentialsError] = useState({
-        emailError: "",
-        passwordError: "",
     });
     const [msgError, setMsgError] = useState("");
 
@@ -28,26 +22,17 @@ export const Login = () => {
         }));
     };
 
-    const checkError = (e) => {
-        const error = validate(e.target.name, e.target.value);
-        setCredentialsError((prevState) => ({
-            ...prevState,
-            [e.target.name + "Error"]: error
-        }));
-    };
-
     const loginMe = async () => {
         try {
-            for (let element in credentials) {
-                if (credentials[element] === "") {
-                    throw new Error("All fields must be filled out");
-                }
-            }
+            // Perform login request
             const fetched = await LoginUser(credentials);
             console.log(fetched); 
+
             if (fetched && fetched.user && fetched.user.firstName) {
                 login(fetched.token, fetched.user);
                 setMsgError(`Welcome back, ${fetched.user.firstName}`);
+                
+                // Navigate to home after a delay
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
@@ -68,30 +53,24 @@ export const Login = () => {
                     User Login
                 </div>
                 <CustomInput
-                    className={`inputDesign ${credentialsError.emailError !== "" ? "inputDesignError" : ""}`}
-                    type={"email"}
-                    placeholder={"Email"}
-                    name={"email"}
-                    disabled={""}
+                    className="inputDesign"
+                    type="email"
+                    placeholder="Email"
+                    name="email"
                     value={credentials.email || ""}
                     onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
                 />
-                <div className="error">{credentialsError.emailError}</div>
                 <CustomInput
-                    className={`inputDesign ${credentialsError.passwordError !== "" ? "inputDesignError" : ""}`}
-                    type={"password"}
-                    placeholder={"Password"}
+                    className="inputDesign"
+                    type="password"
+                    placeholder="Password"
                     name="password"
-                    disabled={""}
                     value={credentials.password || ""}
                     onChangeFunction={(e) => inputHandler(e)}
-                    onBlurFunction={(e) => checkError(e)}
                 />
-                <div className="error">{credentialsError.passwordError}</div>
                 <CustomButton
-                    className={"buttonDesign"}
-                    title={"Login"}
+                    className="buttonDesign"
+                    title="Login"
                     functionEmit={loginMe}
                 />
                 <div className="error">{msgError}</div>

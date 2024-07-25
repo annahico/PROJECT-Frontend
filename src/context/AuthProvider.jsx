@@ -1,13 +1,7 @@
-import { AuthContext, useAuthContext } from './AuthContext';
+import { AuthContext, useAuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
-const auth = useAuthContext()
-    return (
-        <AuthContext.Provider value={ auth }>
-            {children}
-        </AuthContext.Provider>
-    );
+  const auth = useAuthContext();
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
-
-
-

@@ -1,0 +1,122 @@
+.cardDesign {
+    margin: 2em;
+    padding: 0em;
+    height: 55vh;
+    width: 27vw;
+    background-color: rgb(43, 4, 28);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 5% 5% 5% 5%;
+    border: 0.1em solid black;
+    font-weight: bold;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.cardDesign:hover {
+    transition: 0.2s;
+    background-color: rgb(198, 71, 170);
+    border: 0.1em solid black;
+}
+
+.picture {
+    height: 50vh;
+    width: 25vw;
+    background-color: white;
+    border: 0.1em solid black;
+}
+
+.modalPicture {
+    height: 67vh;
+    width: 50vw;
+    border: 0.1em solid black;
+}
+
+.modal-design {
+    height: 100vh;
+    width: 80vw;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Cambria;
+}
+
+.modal-design-header {
+    height: 13vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    flex-direction: column;
+}
+
+.modal-design-body-portfolio {
+    height: 70vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-design-footer {
+    height: 9vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalConfirm-design-header {
+    height: 10vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    font-family: Cambria;
+}
+
+.modalConfirm-design-body {
+    height: 20vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Cambria;
+}
+
+.modalConfirm-design-footer {
+    height: 10vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Cambria;
+}
+
+.spacer {
+    height: 1vh;
+    width: 10vw;
+
+}
+
+.modalButton {
+    margin: 1em;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    font-family: Cambria;
+    transition: 0.2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.modalButton:hover {
+    transition: 0.2s;
+    color: rgb(198, 71, 170);
+}

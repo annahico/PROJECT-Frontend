@@ -1,0 +1,73 @@
+.cardDesignTattoo {
+    margin: 2em;
+    padding: 0em;
+    height: 57vh;
+    width: 26vw;
+    background-color: rgb(43, 4, 28);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 5% 5% 5% 5%;
+    border: 0.1em solid black;
+    font-weight: bold;
+    transition: 0.2s;
+    cursor: pointer;
+    font-family: Cambria;
+}
+
+.cardDesignTattoo:hover {
+    transition: 0.2s;
+    background-color: rgb(198, 71, 170);
+    border: 0.1em solid black;
+}
+
+.pictureTattoo {
+    height: 50vh;
+    width: 25vw;
+    background-color: white;
+    border: 0.1em solid rgb(198, 71, 170);
+}
+
+.modalPicture {
+    height: 77vh;
+    width: 55vw;
+    background-color: white;
+    border: 0.1em solid black;
+}
+
+.modal-design {
+    height: 100vh;
+    width: 80vw;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Cambria;
+}
+
+.modalConfirm-design-header {
+    height: 10vh;
+    width: 56.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(43, 4, 28);
+}
+
+.modal-design-body-tattoo {
+    height: 70vh;
+    width: 56.5vw;
+    background-color: rgb(43, 4, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spacer {
+    height: 1vh;
+    width: 3vw;
+}

@@ -1,4 +1,4 @@
-import { Header } from "../../common/Layout/Header/Header";
+import { Header } from "../../common/Header/Header";
 import "./Home.css";
 
 export const Home = () => {

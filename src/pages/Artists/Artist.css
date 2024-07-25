@@ -1,8 +1,16 @@
-.artists-container {
+.artists-body {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 15px;
+}
+
+.artists-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+    width: 80%;
 }
 
 .artists-header {
