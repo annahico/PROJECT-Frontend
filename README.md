@@ -1,4 +1,4 @@
-<h1 align="center"> PROJECT FRONTEND: TATTOO STUDIO </h1>
+<h1 align="center"> PROJECT FRONTEND: CAMDEM TATTOO </h1>
 
 <image src="" alt="Tattoo Studio">
 
