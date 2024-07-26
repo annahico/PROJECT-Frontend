@@ -1,0 +1,61 @@
+.title {
+    font-family: Cambria;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+.registerAppointment {
+    height: 83vh;
+    width: 100vw;
+
+    background-image: url();
+    color: white;
+}
+
+.upRowAppointment {
+    height: 23vh;
+    width: 100vw;
+}
+
+.midRowPayment {
+    height: 40vh;
+    width: 100vw;
+}
+
+.downRowRegister {
+    height: 10vh;
+    width: 100vw;
+}
+
+.inputRow {
+    height: 10vh;
+}
+
+.price {
+    height: 10vh;
+    width: 100vw;
+}
+
+.subheaderRow {
+    height: 5vh;
+    width: 100vw;
+}
+
+.artistDropdown {
+    width: 20vw;
+    border-radius: 10em;
+    border: solid rgb(198, 71, 170);
+}
+
+.space {
+    height: 15vh;
+    width: 100vw;
+}
+
+.scripting {
+    font-family: Cambria;
+    font-size: large;
+    display: flex;
+    justify-content: center;
+}
