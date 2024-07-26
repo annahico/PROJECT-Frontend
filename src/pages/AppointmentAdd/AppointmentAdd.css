@@ -8,8 +8,9 @@
 .registerAppointment {
     height: 83vh;
     width: 100vw;
-
-    background-image: url();
+    background-image: url(../../img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
     color: white;
 }
 

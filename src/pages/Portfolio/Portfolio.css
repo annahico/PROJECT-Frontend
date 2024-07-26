@@ -1,0 +1,53 @@
+.subHeader {
+    height: 6vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(43, 4, 28);
+    color: white;
+}
+
+.subheaderSpace {
+    height: 1vh;
+    width: 17vw;
+}
+
+.portfolioName {
+    margin: 1em;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    font-family: Cambria;
+    display: flex;
+    justify-content: center;
+}
+
+.subheaderButton {
+    margin: 1em;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    font-family: Cambria;
+    transition: 0.2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.subheaderButton:hover {
+    transition: 0.2s;
+    color: rgb(198, 71, 170);
+}
+
+.infinite-scroll-container {
+    width: 100vw;
+    height: 77vh;
+    overflow: auto;
+    background-image: url(../../img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}

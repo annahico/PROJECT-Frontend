@@ -1,44 +1,43 @@
-.login {
+.profile {
     height: 83vh;
     width: 100vw;
-    background-color: rgb(43, 4, 28);
     background-image: url();
     color: white;
-}
-
-.upRowLogin {
-    height: 15vh;
-}
-
-.middleRowLogin {
-    height: 25vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.downRowLogin {
-    height: 30vh;
-    display: flex;
     justify-content: center;
-}
-
-.buttons {
-    display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
-.messageBox {
+.spaceUp {
+    height: 10vh;
+}
+
+.upRowRegister {
+    height: 50vh;
+}
+
+.downRowRegister {
+    height: 5vh;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.downRowPayment {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.title {
     font-family: Cambria;
+    justify-content: center;
+    align-items: center;
     font-size: large;
 }
 
 .buttonBody {
-    width: 6vw;
+    width: 13vw;
     margin: 1em;
     color: white;
     background-color: rgb(198, 71, 170);
@@ -54,4 +53,11 @@
 .buttonBody:hover {
     transition: 0.2s;
     color: black;
+}
+
+.scripting {
+    font-family: Cambria;
+    font-size: large;
+    display: flex;
+    justify-content: center;
 }

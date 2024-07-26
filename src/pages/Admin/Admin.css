@@ -1,8 +1,9 @@
 .infinite-scroll-container {
     width: 100vw;
     overflow: auto;
-
-    background-image: url();
+    background-image: url(../../img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     align-items: center;
     flex-wrap: wrap;

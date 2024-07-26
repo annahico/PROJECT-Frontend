@@ -1,0 +1,15 @@
+.home {
+    height: 83vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url();
+}
+
+.carouselImg {
+    height: 70vh;
+    width: 70vw;
+    border: solid rgb(198, 71, 170);
+    border-radius: 1em;
+}
