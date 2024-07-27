@@ -56,14 +56,14 @@ export const Login = () => {
           placeholder="Introduce your e-mail"
           value={credentials.email}
           name="email"
-          manejadora={inputHandler}
+          onChange={inputHandler} // Cambiado de 'manejadora' a 'onChange'
         />
         <Input
           type="password"
           placeholder="Introduce your password"
           value={credentials.password}
           name="password"
-          manejadora={inputHandler}
+          onChange={inputHandler} // Cambiado de 'manejadora' a 'onChange'
         />
       </div>
       <div className="row downRowLogin">

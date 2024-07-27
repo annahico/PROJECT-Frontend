@@ -39,8 +39,13 @@ export const Register = () => {
     }));
   };
 
+  const sanitizeFormData = (data) => {
+    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, String(value)]));
+  };
+
   const registerMe = () => {
-    const { password, password_repeat, ...rest } = formData;
+    const sanitizedData = sanitizeFormData(formData);
+    const { password, password_repeat, ...rest } = sanitizedData;
 
     // Check for empty fields
     const hasEmptyField = Object.values(rest).some((value) => value.trim() === "");
@@ -57,7 +62,7 @@ export const Register = () => {
       return;
     }
 
-    registerUser(formData)
+    registerUser(sanitizedData)
       .then(() => {
         navigate("/");
       })
