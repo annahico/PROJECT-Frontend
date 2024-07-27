@@ -2,7 +2,10 @@
     height: 83vh;
     width: 100vw;
     background-color: rgb(43, 4, 28);
-    background-image: url();
+    background-image: url(../../img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     color: white;
 }
 

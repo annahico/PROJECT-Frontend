@@ -24,56 +24,56 @@ export const Login = () => {
     }));
   };
 
-  const loginMe = () => {
-    loginUser(credentials)
-      .then((resultado) => {
-        const userCredentials = {
-          token: resultado.data.token,
-          userData: jwt_decode(resultado.data.token),
-        };
-        dispatch(login({ credentials: userCredentials }));
-        navigate("/");
-      })
-      .catch((error) => console.log(error));
+  const loginMe = async () => {
+    try {
+      const resultado = await loginUser(credentials);
+      const userCredentials = {
+        token: resultado.data.token,
+        userData: jwt_decode(resultado.data.token),
+      };
+      dispatch(login({ credentials: userCredentials }));
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Opcional: Agregar lógica para mostrar un mensaje de error
+    }
   };
 
   useEffect(() => {
-    if (datosReduxUser.credentials?.userData?.roleId == 1) {
-      navigate("/");
-    } else if (datosReduxUser.credentials?.userData?.roleId == 2) {
-      navigate("/");
-    } else if (datosReduxUser.credentials?.userData?.roleId == 3) {
+    const userRole = datosReduxUser.credentials?.userData?.roleId;
+
+    if (userRole) {
       navigate("/");
     }
-  }, [datosReduxUser]);
+  }, [datosReduxUser, navigate]);
 
   return (
     <div className="container-fluid login">
       <div className="row upRowLogin"></div>
       <div className="row middleRowLogin">
         <Input
-          type={"email"}
+          type="email"
           placeholder="Introduce your e-mail"
           value={credentials.email}
-          name={"email"}
+          name="email"
           manejadora={inputHandler}
         />
         <Input
-          type={"password"}
+          type="password"
           placeholder="Introduce your password"
           value={credentials.password}
-          name={"password"}
+          name="password"
           manejadora={inputHandler}
         />
       </div>
       <div className="row downRowLogin">
         <div className="col"></div>
         <div className="col buttons">
-          <div className="buttonBody" onClick={() => loginMe()}>
+          <div className="buttonBody" onClick={loginMe}>
             Login
           </div>
           <div className="messageBox">
-            If you don't have an account click on the button to register
+            If you do not have an account click on the button to register
           </div>
           <div className="buttonBody" onClick={() => navigate("/register")}>
             Register

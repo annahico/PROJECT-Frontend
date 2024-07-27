@@ -9,11 +9,12 @@ import "./AdminAdd.css";
 export const AdminAdd = () => {
   const reduxUserData = useSelector(userDataCheck);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (reduxUserData.credentials?.userData?.roleId !== 1) {
       navigate("/");
     }
-  }, [reduxUserData]);
+  }, [reduxUserData, navigate]);
 
   const [registerBody, setRegisterBody] = useState({
     role_id: 1,
@@ -22,35 +23,29 @@ export const AdminAdd = () => {
     email: "",
     phone: "",
     password: "",
-  });
-
-  const [password2, setPassword2] = useState({
     password_repeat: "",
   });
 
-  //BIND
+  // BIND
   const inputHandler = (e) => {
+    const { name, value } = e.target;
     setRegisterBody((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-
-    setPassword2((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const registerMe = () => {
-    if (registerBody.password === password2.password_repeat) {
-      registerUser(registerBody)
-        .then((result) => {
-          navigate("/");
-        })
-        .catch((error) => console.log(error));
-    } else {
+    const { password, password_repeat, ...rest } = registerBody;
+
+    if (password !== password_repeat) {
       console.log("Passwords do not match");
+      return;
     }
+
+    registerUser({ password, ...rest })
+      .then(() => navigate("/"))
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -62,10 +57,10 @@ export const AdminAdd = () => {
           <div className="row inputRow">
             <div className="scripting">Name</div>
             <Input
-              type={"text"}
+              type="text"
               placeholder="Enter the name"
               value={registerBody.name}
-              name={"name"}
+              name="name"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -73,10 +68,10 @@ export const AdminAdd = () => {
           <div className="row inputRow">
             <div className="scripting">Email</div>
             <Input
-              type={"email"}
+              type="email"
               placeholder="Enter the email"
               value={registerBody.email}
-              name={"email"}
+              name="email"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -84,10 +79,10 @@ export const AdminAdd = () => {
           <div className="row inputRow">
             <div className="scripting">Phone</div>
             <Input
-              type={"number"}
+              type="tel"
               placeholder="Enter the phone number"
               value={registerBody.phone}
-              name={"phone"}
+              name="phone"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -97,10 +92,10 @@ export const AdminAdd = () => {
           <div className="row inputRow">
             <div className="scripting">Surnames</div>
             <Input
-              type={"text"}
+              type="text"
               placeholder="Enter the surnames"
               value={registerBody.surnames}
-              name={"surnames"}
+              name="surnames"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -108,21 +103,21 @@ export const AdminAdd = () => {
           <div className="row inputRow">
             <div className="scripting">Password</div>
             <Input
-              type={"password"}
+              type="password"
               placeholder="Enter the password"
               value={registerBody.password}
-              name={"password"}
+              name="password"
               className="defaultInput"
               manejadora={inputHandler}
             />
           </div>
           <div className="row inputRow">
-            <div className="scripting">Repeat Password</div>
+            <div className="scripting">Repeat the Password</div>
             <Input
-              type={"password"}
+              type="password"
               placeholder="Repeat the password"
-              value={password2.password_repeat}
-              name={"password_repeat"}
+              value={registerBody.password_repeat}
+              name="password_repeat"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -132,7 +127,7 @@ export const AdminAdd = () => {
         <div className="col-1"></div>
       </div>
       <div className="row downRowRegister">
-        <div className="buttonBody" onClick={() => registerMe()}>
+        <div className="buttonBody" onClick={registerMe}>
           Register
         </div>
       </div>

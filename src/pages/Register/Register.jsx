@@ -1,61 +1,67 @@
-import "./Register.css";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Input } from "../../common/Input/Input";
-import { useState, useEffect } from "react";
 import { registerUser } from "../../services/apiCalls";
 import { userDataCheck } from "../userSlice";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import "./Register.css";
 
 export const Register = () => {
   const reduxUserData = useSelector(userDataCheck);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (reduxUserData.credentials?.userData?.roleId == 1) {
-      navigate("/");
-    } else if (reduxUserData.credentials?.userData?.roleId == 2) {
-      navigate("/");
-    } else if (reduxUserData.credentials?.userData?.roleId == 3) {
+    const userRoleId = reduxUserData.credentials?.userData?.roleId;
+    if ([1, 2, 3].includes(userRoleId)) {
       navigate("/");
     }
-  }, [reduxUserData]);
+  }, [reduxUserData, navigate]);
 
-  const [registerBody, setRegisterBody] = useState({
+  const [formData, setFormData] = useState({
     role_id: 2,
     name: "",
     surnames: "",
     email: "",
     phone: "",
     password: "",
-  });
-
-  const [password2, setPassword2] = useState({
     password_repeat: "",
   });
 
-  //BIND
-  const inputHandler = (e) => {
-    setRegisterBody((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+  const [formErrors, setFormErrors] = useState({
+    password_repeatError: "",
+  });
 
-    setPassword2((prevState) => ({
+  const inputHandler = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const registerMe = () => {
-    if (registerBody.password == password2.password_repeat) {
-      registerUser(registerBody)
-        .then((resultado) => {
-          navigate("/");
-        })
-        .catch((error) => console.log(error));
-    } else {
-      console.log("los passwords no coinciden");
+    const { password, password_repeat, ...rest } = formData;
+
+    // Check for empty fields
+    const hasEmptyField = Object.values(rest).some((value) => value.trim() === "");
+    if (hasEmptyField) {
+      console.log("Please fill all fields");
+      return;
     }
+
+    if (password !== password_repeat) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        password_repeatError: "Passwords do not match",
+      }));
+      return;
+    }
+
+    registerUser(formData)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -67,21 +73,21 @@ export const Register = () => {
           <div className="row inputRow">
             <div className="scripting">Name</div>
             <Input
-              type={"text"}
-              placeholder="Introduce your name"
-              value={registerBody.name}
-              name={"name"}
+              type="text"
+              placeholder="Enter your name"
+              value={formData.name}
+              name="name"
               className="defaultInput"
               manejadora={inputHandler}
             />
           </div>
           <div className="row inputRow">
-            <div className="scripting">e-mail</div>
+            <div className="scripting">Email</div>
             <Input
-              type={"email"}
-              placeholder="Introduce your e-mail"
-              value={registerBody.email}
-              name={"email"}
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              name="email"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -89,10 +95,10 @@ export const Register = () => {
           <div className="row inputRow">
             <div className="scripting">Phone</div>
             <Input
-              type={"number"}
-              placeholder="Introduce your phone number"
-              value={registerBody.phone}
-              name={"phone"}
+              type="number"
+              placeholder="Enter your phone number"
+              value={formData.phone}
+              name="phone"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -102,10 +108,10 @@ export const Register = () => {
           <div className="row inputRow">
             <div className="scripting">Surnames</div>
             <Input
-              type={"text"}
-              placeholder="Introduce your surnames"
-              value={registerBody.surnames}
-              name={"surnames"}
+              type="text"
+              placeholder="Enter your surnames"
+              value={formData.surnames}
+              name="surnames"
               className="defaultInput"
               manejadora={inputHandler}
             />
@@ -113,31 +119,33 @@ export const Register = () => {
           <div className="row inputRow">
             <div className="scripting">Password</div>
             <Input
-              type={"password"}
-              placeholder="Introduce your password"
-              value={registerBody.password}
-              name={"password"}
+              type="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              name="password"
               className="defaultInput"
               manejadora={inputHandler}
             />
           </div>
           <div className="row inputRow">
-            <div className="scripting">Password</div>
+            <div className="scripting">Repeat Password</div>
             <Input
-              type={"password"}
+              type="password"
               placeholder="Repeat your password"
-              value={registerBody.password_repeat}
-              name={"password_repeat"}
+              value={formData.password_repeat}
+              name="password_repeat"
               className="defaultInput"
               manejadora={inputHandler}
             />
+            {formErrors.password_repeatError && (
+              <div className="error">{formErrors.password_repeatError}</div>
+            )}
           </div>
-          <div className="row inputRow"></div>
         </div>
         <div className="col-1"></div>
       </div>
       <div className="row downRowRegister">
-        <div className="buttonBody" onClick={() => registerMe()}>
+        <div className="buttonBody" onClick={registerMe}>
           Register
         </div>
       </div>

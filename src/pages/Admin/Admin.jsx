@@ -1,36 +1,33 @@
-import "./Admin.css";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { bringUsers } from "../../services/apiCalls";
-import { userDataCheck } from "../../pages/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { UserCard } from "../../common/UserCard/UserCard";
+import { userDataCheck } from "../../pages/userSlice";
+import { bringUsers } from "../../services/apiCalls";
+import "./Admin.css";
 
 export const Admin = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  //Instanciamos Redux en modo LECTURA para user
   const reduxUserData = useSelector(userDataCheck);
 
   useEffect(() => {
+    // Redirige si el usuario no tiene el rol adecuado
     if (reduxUserData.credentials?.userData?.roleId !== 1) {
       navigate("/");
     }
-  }, []);
+  }, [reduxUserData, navigate]);
 
   useEffect(() => {
-    if (reduxUserData.credentials?.userData?.roleId !== 1) {
-      navigate("/");
+    // Obtiene la lista de usuarios al montar el componente o cuando reduxUserData cambia
+    if (reduxUserData.credentials?.userData?.roleId === 1) {
+      bringUsers(reduxUserData.credentials)
+        .then((resultado) => {
+          setUsers(resultado.data.data);
+        })
+        .catch((error) => console.log(error));
     }
   }, [reduxUserData]);
-
-  useEffect(() => {
-    bringUsers(reduxUserData.credentials)
-      .then((resultado) => {
-        setUsers(resultado.data.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   const updateMe = () => {
     bringUsers(reduxUserData.credentials)
@@ -50,23 +47,19 @@ export const Admin = () => {
 
       {users.length > 0 ? (
         <div className="infinite-scroll-container">
-          {users.map((user) => {
-            return (
-              <UserCard
-                // Key es una palabra reservada en React
-                key={user.id}
-                ////////////////////////////////
-                id={user.id}
-                role_id={user.role_id}
-                name={user.name}
-                surnames={user.surnames}
-                phone={user.phone}
-                email={user.email}
-                user={user}
-                update={updateMe}
-              />
-            );
-          })}
+          {users.map((user) => (
+            <UserCard
+              key={user.id}
+              id={user.id}
+              role_id={user.role_id}
+              name={user.name}
+              surnames={user.surnames}
+              phone={user.phone}
+              email={user.email}
+              user={user}
+              update={updateMe}
+            />
+          ))}
         </div>
       ) : (
         <div className="home">
