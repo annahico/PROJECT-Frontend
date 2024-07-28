@@ -56,8 +56,11 @@ I recently completed a frontend project for a potential tattoo and piercing shop
 <h4>FrontEnd</h4>
 
 - Clone this repository.
+  
   `npm install`.
+  
   `npm run dev`.
+  
 - Access localhost from the console view.
 
 ---
